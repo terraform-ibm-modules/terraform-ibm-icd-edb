@@ -1,4 +1,4 @@
-module "postgresql_db" {
+module "enterprise_db" {
   source                        = "../../"
   resource_group_id             = var.resource_group_id
   name                          = var.name

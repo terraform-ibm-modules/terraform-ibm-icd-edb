@@ -1,5 +1,5 @@
 ##############################################################################
-# ICD PostgreSQL module
+# ICD EnterpriseDB(EDB) module
 ##############################################################################
 
 locals {
@@ -28,24 +28,24 @@ locals {
   ) : null
 }
 
-# Create IAM Authorization Policies to allow PostgreSQL to access KMS for the encryption key
+# Create IAM Authorization Policies to allow EDB to access KMS for the encryption key
 resource "ibm_iam_authorization_policy" "kms_policy" {
   count                       = var.kms_encryption_enabled == false || var.skip_iam_authorization_policy ? 0 : 1
-  source_service_name         = "databases-for-postgresql"
+  source_service_name         = "databases-for-enterprisedb"
   source_resource_group_id    = var.resource_group_id
   target_service_name         = local.kms_service
   target_resource_instance_id = var.existing_kms_instance_guid
   roles                       = ["Reader"]
 }
 
-# Create postgresql database
-resource "ibm_database" "postgresql_db" {
+# Create edb database
+resource "ibm_database" "enterprise_db" {
   depends_on                           = [ibm_iam_authorization_policy.kms_policy]
   resource_group_id                    = var.resource_group_id
   name                                 = var.name
-  service                              = "databases-for-postgresql"
+  service                              = "databases-for-enterprisedb"
   location                             = var.region
-  plan                                 = "standard" # Only standard plan is available for postgres
+  plan                                 = "standard" # Only standard plan is available for edb
   backup_id                            = var.backup_crn
   plan_validation                      = var.plan_validation
   remote_leader_id                     = var.remote_leader_crn
@@ -59,7 +59,7 @@ resource "ibm_database" "postgresql_db" {
   point_in_time_recovery_time          = var.pitr_time
 
   group {
-    group_id = "member" # Only member type is allowed for postgresql
+    group_id = "member" # Only member type is allowed for EDB (TBD: PRateek to verify this )
     memory {
       allocation_mb = var.member_memory_mb
     }
@@ -137,12 +137,12 @@ module "cbr_rule" {
       },
       {
         name     = "serviceInstance"
-        value    = ibm_database.postgresql_db.guid
+        value    = ibm_database.enterprise_db.guid
         operator = "stringEquals"
       },
       {
         name     = "serviceName"
-        value    = "databases-for-postgresql"
+        value    = "databases-for-enterprisedb"
         operator = "stringEquals"
       }
     ]
@@ -164,7 +164,7 @@ resource "ibm_resource_key" "service_credentials" {
   for_each             = var.service_credential_names
   name                 = each.key
   role                 = each.value
-  resource_instance_id = ibm_database.postgresql_db.id
+  resource_instance_id = ibm_database.enterprise_db.id
   tags                 = var.resource_tags
 }
 
@@ -176,7 +176,7 @@ locals {
   } : null
 
   service_credentials_object = length(var.service_credential_names) > 0 ? {
-    hostname    = ibm_resource_key.service_credentials[keys(var.service_credential_names)[0]].credentials["connection.postgres.hosts.0.hostname"]
+    hostname    = ibm_resource_key.service_credentials[keys(var.service_credential_names)[0]].credentials["connection.postgres.hosts.0.hostname"] # PRATEEK: TBD Check connection string
     certificate = ibm_resource_key.service_credentials[keys(var.service_credential_names)[0]].credentials["connection.postgres.certificate.certificate_base64"]
     credentials = {
       for service_credential in ibm_resource_key.service_credentials :

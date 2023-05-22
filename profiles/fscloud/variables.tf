@@ -4,12 +4,12 @@
 
 variable "resource_group_id" {
   type        = string
-  description = "The resource group ID where the PostgreSQL instance will be created."
+  description = "The resource group ID where the Enterprise DB instance will be created."
 }
 
 variable "name" {
   type        = string
-  description = "The name to give the Postgresql instance."
+  description = "The name given to the Enterprise DB instance."
 }
 
 variable "existing_kms_instance_guid" {
@@ -18,7 +18,7 @@ variable "existing_kms_instance_guid" {
 }
 
 variable "pg_version" {
-  description = "Version of the PostgreSQL instance. If no value is passed, the current preferred version of IBM Cloud Databases is used."
+  description = "Version of the Enterprise DB instance. If no value is passed, the current preferred version of IBM Cloud Databases is used."
   type        = string
   default     = null
 }
@@ -31,19 +31,19 @@ variable "region" {
 
 variable "member_memory_mb" {
   type        = number
-  description = "Allocated memory per member. For more information, see https://cloud.ibm.com/docs/databases-for-postgresql?topic=databases-for-postgresql-resources-scaling"
+  description = "Allocated memory per member. For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling"
   default     = 1024
 }
 
 variable "member_disk_mb" {
   type        = number
-  description = "Allocated disk per member. For more information, see https://cloud.ibm.com/docs/databases-for-postgresql?topic=databases-for-postgresql-resources-scaling"
-  default     = 5120
+  description = "Allocated disk per member. For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling"
+  default     = 20480
 }
 
 variable "member_cpu_count" {
   type        = number
-  description = "Allocated dedicated CPU per member. For shared CPU, set to 0. For more information, see https://cloud.ibm.com/docs/databases-for-postgresql?topic=databases-for-postgresql-resources-scaling"
+  description = "Allocated dedicated CPU per member. Minimum number of CPU allowed is 3 . For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling"
   default     = 3
 }
 
@@ -66,7 +66,7 @@ variable "members" {
 
 variable "resource_tags" {
   type        = list(string)
-  description = "Optional list of tags to be added to the PostgreSQL instance."
+  description = "Optional list of tags to be added to the Enterprise DB instance."
   default     = []
 }
 
@@ -95,7 +95,7 @@ variable "kms_key_crn" {
 
 variable "skip_iam_authorization_policy" {
   type        = bool
-  description = "Set to true to skip the creation of an IAM authorization policy that permits all PostgreSQL database instances in the resource group to read the encryption key from the Hyper Protect Crypto Services instance. The HPCS instance is passed in through the var.existing_kms_instance_guid variable."
+  description = "Set to true to skip the creation of an IAM authorization policy that permits all Enterprise database instances in the resource group to read the encryption key from the Hyper Protect Crypto Services instance. The HPCS instance is passed in through the var.existing_kms_instance_guid variable."
   default     = false
 }
 

@@ -29,7 +29,7 @@ variable "resource_tags" {
 }
 
 variable "pg_version" {
-  description = "Version of the PostgreSQL instance. If no value is passed, the current preferred version of IBM Cloud Databases is used."
+  description = "Version of the Enterprise DB instance. If no value is passed, the current preferred version of IBM Cloud Databases is used."
   type        = string
   default     = null
 }
@@ -41,17 +41,17 @@ variable "existing_kms_instance_guid" {
 
 variable "kms_key_crn" {
   type        = string
-  description = "The root key CRN of a Hyper Protect Crypto Service (HPCS) that you want to use for disk encryption. See https://cloud.ibm.com/docs/cloud-databases?topic=cloud-databases-hpcs&interface=ui for more information on integrating HPCS with PostgreSQL database."
+  description = "The root key CRN of a Hyper Protect Crypto Service (HPCS) that you want to use for disk encryption. See https://cloud.ibm.com/docs/cloud-databases?topic=cloud-databases-hpcs&interface=ui for more information on integrating HPCS with Enterprise database."
 }
 
 variable "service_credential_names" {
   description = "Map of name, role for service credentials that you want to create for the database"
   type        = map(string)
-  default = {
-    "postgressql_admin" : "Administrator",
-    "postgressql_operator" : "Operator",
-    "postgressql_viewer" : "Viewer",
-    "postgressql_editor" : "Editor",
+  default = { # Prateek: To be verified
+    "enterprise_db_admin" : "Administrator",
+    "enterprise_db_operator" : "Operator",
+    "enterprise_db_viewer" : "Viewer",
+    "enterprise_db_editor" : "Editor",
   }
 }
 

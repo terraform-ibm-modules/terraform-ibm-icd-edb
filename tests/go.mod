@@ -1,4 +1,4 @@
-module github.com/terraform-ibm-modules/terraform-ibm-icd-edb-postgresql
+module github.com/terraform-ibm-modules/terraform-ibm-icd-edb
 
 go 1.20
 

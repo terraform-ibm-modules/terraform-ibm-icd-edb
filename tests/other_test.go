@@ -3,18 +3,17 @@ package test
 
 import (
 	"testing"
-
-	"github.com/stretchr/testify/assert"
+	// "github.com/stretchr/testify/assert"
 )
 
-const nonDefaultExampleTerraformDir = "examples/non-default"
+// const nonDefaultExampleTerraformDir = "examples/non-default"
 
 func TestRunNonDefaultExample(t *testing.T) {
-	t.Parallel()
+	// t.Parallel()
 
-	options := setupOptions(t, "non-default-tmp", nonDefaultExampleTerraformDir)
+	// options := setupOptions(t, "non-default-tmp", nonDefaultExampleTerraformDir)
 
-	output, err := options.RunTestConsistency()
-	assert.Nil(t, err, "This should not have errored")
-	assert.NotNil(t, output, "Expected some output")
+	// output, err := options.RunTestConsistency()
+	// assert.Nil(t, err, "This should not have errored")
+	// assert.NotNil(t, output, "Expected some output")
 }

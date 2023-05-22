@@ -4,27 +4,27 @@
 
 variable "resource_group_id" {
   type        = string
-  description = "The resource group ID where the PostgreSQL instance will be created."
+  description = "The resource group ID where EDB instance will be created."
 }
 
 variable "name" {
   type        = string
-  description = "The name to give the Postgresql instance."
+  description = "The name given to the EDB instance."
 }
 
 variable "plan_validation" {
   type        = bool
-  description = "Enable or disable validating the database parameters for PostgreSQL during the plan phase."
+  description = "Enable or disable validating the database parameters for EDB during the plan phase."
   default     = true
 }
 
 variable "remote_leader_crn" {
   type        = string
-  description = "A CRN of the leader database to make the replica(read-only) deployment. The leader database is created by a database deployment with the same service ID. A read-only replica is set up to replicate all of your data from the leader deployment to the replica deployment by using asynchronous replication. For more information, see https://cloud.ibm.com/docs/databases-for-postgresql?topic=databases-for-postgresql-read-only-replicas"
+  description = "A CRN of the leader database to make the replica(read-only) deployment. The leader database is created by a database deployment with the same service ID. A read-only replica is set up to replicate all of your data from the leader deployment to the replica deployment by using asynchronous replication. For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-read-only-replicas"
   default     = null
 }
 
-variable "pg_version" {
+variable "pg_version" { # PRATEEK: TBD - Check the version shown in UI is always different i.e. 12 should be provide others and also name will it be PostgreSQL
   description = "Version of the PostgreSQL instance to provision. If no value is passed, the current preferred version of IBM Cloud Databases is used."
   type        = string
   default     = null
@@ -48,22 +48,22 @@ variable "region" {
 
 variable "member_memory_mb" {
   type        = number
-  description = "Allocated memory per-member. See the following doc for supported values: https://cloud.ibm.com/docs/databases-for-postgresql?topic=databases-for-postgresql-resources-scaling"
+  description = "Allocated memory per-member. See the following doc for supported values: https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling"
   default     = 1024
   # Validation is done in the Terraform plan phase by the IBM provider, so no need to add extra validation here.
 }
 
 variable "member_disk_mb" {
   type        = number
-  description = "Allocated disk per member. For more information, see https://cloud.ibm.com/docs/databases-for-postgresql?topic=databases-for-postgresql-resources-scaling"
-  default     = 5120
+  description = "Allocated disk per member. For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling"
+  default     = 20480
   # Validation is done in the Terraform plan phase by the IBM provider, so no need to add extra validation here.
 }
 
 variable "member_cpu_count" {
   type        = number
-  description = "Allocated dedicated CPU per member. For shared CPU, set to 0. For more information, see https://cloud.ibm.com/docs/databases-for-postgresql?topic=databases-for-postgresql-resources-scaling"
-  default     = 0
+  description = "Allocated dedicated CPU per member. Minimum number of CPU allowed is 3. For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling"
+  default     = 3
   # Validation is done in the Terraform plan phase by the IBM provider, so no need to add extra validation here.
 }
 
@@ -81,8 +81,9 @@ variable "service_credential_names" {
 variable "members" {
   type        = number
   description = "Allocated number of members. Members can be scaled up but not down."
-  default     = 2
+  default     = 3
   # Validation is done in the Terraform plan phase by the IBM provider, so no need to add extra validation here.
+  # PRateek : TBD :  member group members must be >= 3 and <= 20 in increments of 1
 }
 
 variable "service_endpoints" {
@@ -97,7 +98,7 @@ variable "service_endpoints" {
 
 variable "resource_tags" {
   type        = list(string)
-  description = "Optional list of tags to be added to the PostgreSQL instance and the associated service credentials (if creating)."
+  description = "Optional list of tags to be added to the EDB instance and the associated service credentials (if creating)."
   default     = []
 }
 
@@ -192,7 +193,7 @@ variable "backup_encryption_key_crn" {
 
 variable "skip_iam_authorization_policy" {
   type        = bool
-  description = "Set to true to skip the creation of an IAM authorization policy that permits all PostgreSQL database instances in the resource group to read the encryption key from the Hyper Protect Crypto Services (HPCS) instance. If set to false, pass in a value for the HPCS instance in the  var.existing_kms_instance_guid variable. In addition, no policy is created if var.kms_encryption_enabled is set to false."
+  description = "Set to true to skip the creation of an IAM authorization policy that permits all Enterprise database instances in the resource group to read the encryption key from the Hyper Protect Crypto Services (HPCS) instance. If set to false, pass in a value for the HPCS instance in the  var.existing_kms_instance_guid variable. In addition, no policy is created if var.kms_encryption_enabled is set to false."
   default     = false
 }
 
@@ -245,12 +246,12 @@ variable "backup_crn" {
 
 variable "pitr_id" {
   type        = string
-  description = "(Optional) The ID of the source deployment PostgreSQL instance that you want to recover back to. The PostgreSQL instance is expected to be in an up and in running state."
+  description = "(Optional) The ID of the source deployment EDB instance that you want to recover back to. The EDB instance is expected to be in an up and in running state."
   default     = null
 }
 
 variable "pitr_time" {
   type        = string
-  description = "(Optional) The timestamp in UTC format (%Y-%m-%dT%H:%M:%SZ) that you want to restore to. To retrieve the timestamp, run the command (ibmcloud cdb postgresql earliest-pitr-timestamp <deployment name or CRN>). For more info on Point-in-time Recovery, see https://cloud.ibm.com/docs/databases-for-postgresql?topic=databases-for-postgresql-pitr"
+  description = "(Optional) The timestamp in UTC format (%Y-%m-%dT%H:%M:%SZ) that you want to restore to. To retrieve the timestamp, run the command (ibmcloud cdb postgresql earliest-pitr-timestamp <deployment name or CRN>). For more info on Point-in-time Recovery, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-pitr"
   default     = null
 }

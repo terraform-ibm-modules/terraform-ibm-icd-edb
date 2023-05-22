@@ -3,21 +3,21 @@
 ##############################################################################
 
 output "id" {
-  description = "Postgresql instance id"
-  value       = module.postgresql_db.id
+  description = "Enterprise DB instance id"
+  value       = module.enterprise_db.id
 }
 
 output "guid" {
-  description = "Postgresql instance guid"
-  value       = module.postgresql_db.guid
+  description = "Enterprise DB instance guid"
+  value       = module.enterprise_db.guid
 }
 
 output "version" {
-  description = "Postgresql instance version"
-  value       = module.postgresql_db.version
+  description = "Enterprise DB instance version"
+  value       = module.enterprise_db.version
 }
 
 output "crn" {
-  description = "Postgresql instance crn"
-  value       = module.postgresql_db.crn
+  description = "Enterprise DB instance crn"
+  value       = module.enterprise_db.crn
 }

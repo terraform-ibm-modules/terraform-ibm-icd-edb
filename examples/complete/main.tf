@@ -21,7 +21,7 @@ module "key_protect_all_inclusive" {
   region                    = var.region
   key_protect_instance_name = "${var.prefix}-kp"
   resource_tags             = var.resource_tags
-  key_map                   = { "icd-pg" = ["${var.prefix}-pg"] }
+  key_map                   = { "icd-edb" = ["${var.prefix}-edb"] }
 }
 
 ##############################################################################
@@ -63,24 +63,24 @@ module "cbr_zone" {
 }
 
 ##############################################################################
-# Postgres Instance
+# EDB Instance
 ##############################################################################
 
-module "postgresql_db" {
+module "enterprise_db" {
   source                     = "../../"
   resource_group_id          = module.resource_group.resource_group_id
-  name                       = "${var.prefix}-postgres"
+  name                       = "${var.prefix}-edb"
   region                     = var.region
   pg_version                 = var.pg_version
   kms_encryption_enabled     = true
-  kms_key_crn                = module.key_protect_all_inclusive.keys["icd-pg.${var.prefix}-pg"].crn
+  kms_key_crn                = module.key_protect_all_inclusive.keys["icd-edb.${var.prefix}-edb"].crn
   existing_kms_instance_guid = module.key_protect_all_inclusive.key_protect_guid
   resource_tags              = var.resource_tags
   service_credential_names   = var.service_credential_names
   cbr_rules = [
     {
-      description      = "${var.prefix}-postgres access only from vpc"
-      enforcement_mode = "enabled" #Postgresql does not support report mode
+      description      = "${var.prefix}-edb access only from vpc"
+      enforcement_mode = "enabled" #EDB does not support report mode #PRATEEK: To be verified
       account_id       = data.ibm_iam_account_settings.iam_account_settings.account_id
       rule_contexts = [{
         attributes = [
@@ -99,7 +99,7 @@ module "postgresql_db" {
 
 # VPE provisioning should wait for the database provisioning
 resource "time_sleep" "wait_120_seconds" {
-  depends_on      = [module.postgresql_db]
+  depends_on      = [module.enterprise_db]
   create_duration = "120s"
 }
 
@@ -115,7 +115,7 @@ resource "ibm_is_security_group" "sg1" {
 resource "ibm_is_virtual_endpoint_gateway" "pgvpe" {
   name = "${var.prefix}-vpe-to-pg"
   target {
-    crn           = module.postgresql_db.crn
+    crn           = module.enterprise_db.crn
     resource_type = "provider_cloud_service"
   }
   vpc = ibm_is_vpc.example_vpc.id

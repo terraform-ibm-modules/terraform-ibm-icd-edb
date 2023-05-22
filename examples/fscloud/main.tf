@@ -48,13 +48,13 @@ module "cbr_zone" {
 }
 
 ##############################################################################
-# Postgres Instance
+# Enterprise DB Instance
 ##############################################################################
 
-module "postgresql_db" {
+module "enterprise_db" {
   source                     = "../../profiles/fscloud"
   resource_group_id          = module.resource_group.resource_group_id
-  name                       = "${var.prefix}-postgres"
+  name                       = "${var.prefix}-edb"
   region                     = var.region
   pg_version                 = var.pg_version
   kms_key_crn                = var.kms_key_crn
@@ -64,8 +64,8 @@ module "postgresql_db" {
   auto_scaling               = var.auto_scaling
   cbr_rules = [
     {
-      description      = "${var.prefix}-postgres access only from vpc"
-      enforcement_mode = "enabled" #Postgresql does not support report mode
+      description      = "${var.prefix}-edb access only from vpc"
+      enforcement_mode = "enabled" #Enterprise DB does not support report mode # PRATEEK: TBD - Verify this
       account_id       = data.ibm_iam_account_settings.iam_account_settings.account_id
       rule_contexts = [{
         attributes = [

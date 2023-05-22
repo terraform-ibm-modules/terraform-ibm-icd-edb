@@ -3,23 +3,23 @@
 ##############################################################################
 
 output "id" {
-  description = "Postgresql instance id"
-  value       = ibm_database.postgresql_db.id
+  description = "EDB instance id"
+  value       = ibm_database.enterprise_db.id
 }
 
 output "guid" {
-  description = "Postgresql instance guid"
-  value       = ibm_database.postgresql_db.guid
+  description = "EDB instance guid"
+  value       = ibm_database.enterprise_db.guid
 }
 
 output "version" {
-  description = "Postgresql instance version"
-  value       = ibm_database.postgresql_db.version
+  description = "EDB instance version"
+  value       = ibm_database.enterprise_db.version
 }
 
 output "crn" {
-  description = "Postgresql instance crn"
-  value       = ibm_database.postgresql_db.resource_crn
+  description = "EDB instance crn"
+  value       = ibm_database.enterprise_db.resource_crn
 }
 
 output "service_credentials_json" {
@@ -35,6 +35,6 @@ output "service_credentials_object" {
 }
 
 output "cbr_rule_ids" {
-  description = "CBR rule ids created to restrict Postgresql"
+  description = "CBR rule ids created to restrict EDB"
   value       = module.cbr_rule[*].rule_id
 }
