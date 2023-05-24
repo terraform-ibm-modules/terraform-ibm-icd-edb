@@ -47,7 +47,7 @@ variable "kms_key_crn" {
 variable "service_credential_names" {
   description = "Map of name, role for service credentials that you want to create for the database"
   type        = map(string)
-  default = { # Prateek: To be verified
+  default = {
     "enterprise_db_admin" : "Administrator",
     "enterprise_db_operator" : "Operator",
     "enterprise_db_viewer" : "Viewer",

@@ -59,7 +59,7 @@ resource "ibm_database" "enterprise_db" {
   point_in_time_recovery_time          = var.pitr_time
 
   group {
-    group_id = "member" # Only member type is allowed for EDB (TBD: PRateek to verify this )
+    group_id = "member" # Only member type is allowed for EDB
     memory {
       allocation_mb = var.member_memory_mb
     }
@@ -176,7 +176,7 @@ locals {
   } : null
 
   service_credentials_object = length(var.service_credential_names) > 0 ? {
-    hostname    = ibm_resource_key.service_credentials[keys(var.service_credential_names)[0]].credentials["connection.postgres.hosts.0.hostname"] # PRATEEK: TBD Check connection string
+    hostname    = ibm_resource_key.service_credentials[keys(var.service_credential_names)[0]].credentials["connection.postgres.hosts.0.hostname"]
     certificate = ibm_resource_key.service_credentials[keys(var.service_credential_names)[0]].credentials["connection.postgres.certificate.certificate_base64"]
     credentials = {
       for service_credential in ibm_resource_key.service_credentials :

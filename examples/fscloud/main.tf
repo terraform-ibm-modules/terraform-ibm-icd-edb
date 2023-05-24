@@ -65,7 +65,7 @@ module "enterprise_db" {
   cbr_rules = [
     {
       description      = "${var.prefix}-edb access only from vpc"
-      enforcement_mode = "enabled" #Enterprise DB does not support report mode # PRATEEK: TBD - Verify this
+      enforcement_mode = "enabled" # Enterprise DB does not support report mode
       account_id       = data.ibm_iam_account_settings.iam_account_settings.account_id
       rule_contexts = [{
         attributes = [

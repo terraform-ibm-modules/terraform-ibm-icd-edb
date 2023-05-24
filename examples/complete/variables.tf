@@ -37,7 +37,7 @@ variable "pg_version" {
 variable "service_credential_names" {
   description = "Map of name, role for service credentials that you want to create for the database"
   type        = map(string)
-  default = { #PRATEEK : TBD - Check if prefix postgres is needed or not and also if roles are enough?
+  default = {
     "enterprise_db_admin" : "Administrator",
     "enterprise_db_operator" : "Operator",
     "enterprise_db_viewer" : "Viewer",

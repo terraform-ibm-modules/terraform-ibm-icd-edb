@@ -3,11 +3,11 @@
   "variables": {
     "auto_scaling": {
       "name": "auto_scaling",
-      "type": "object({\n    cpu = object({\n      rate_increase_percent       = optional(number, 10)\n      rate_limit_count_per_member = optional(number, 30)\n      rate_period_seconds         = optional(number, 900)\n      rate_units                  = optional(string, \"count\")\n    })\n    disk = object({\n      capacity_enabled             = optional(bool, false)\n      free_space_less_than_percent = optional(number, 10)\n      io_above_percent             = optional(number, 90)\n      io_enabled                   = optional(bool, false)\n      io_over_period               = optional(string, \"15m\")\n      rate_increase_percent        = optional(number, 10)\n      rate_limit_mb_per_member     = optional(number, 3670016)\n      rate_period_seconds          = optional(number, 900)\n      rate_units                   = optional(string, \"mb\")\n    })\n    memory = object({\n      io_above_percent         = optional(number, 90)\n      io_enabled               = optional(bool, false)\n      io_over_period           = optional(string, \"15m\")\n      rate_increase_percent    = optional(number, 10)\n      rate_limit_mb_per_member = optional(number, 114688)\n      rate_period_seconds      = optional(number, 900)\n      rate_units               = optional(string, \"mb\")\n    })\n  })",
+      "type": "object({\n    disk = object({\n      capacity_enabled             = optional(bool, false)\n      free_space_less_than_percent = optional(number, 10)\n      io_above_percent             = optional(number, 90)\n      io_enabled                   = optional(bool, false)\n      io_over_period               = optional(string, \"15m\")\n      rate_increase_percent        = optional(number, 10)\n      rate_limit_mb_per_member     = optional(number, 3670016)\n      rate_period_seconds          = optional(number, 900)\n      rate_units                   = optional(string, \"mb\")\n    })\n    memory = object({\n      io_above_percent         = optional(number, 90)\n      io_enabled               = optional(bool, false)\n      io_over_period           = optional(string, \"15m\")\n      rate_increase_percent    = optional(number, 10)\n      rate_limit_mb_per_member = optional(number, 114688)\n      rate_period_seconds      = optional(number, 900)\n      rate_units               = optional(string, \"mb\")\n    })\n  })",
       "description": "Optional rules to allow the database to increase resources in response to usage. Only a single autoscaling block is allowed. Make sure you understand the effects of autoscaling, especially for production environments. See https://ibm.biz/autoscaling-considerations in the IBM Cloud Docs.",
       "pos": {
         "filename": "variables.tf",
-        "line": 126
+        "line": 130
       }
     },
     "backup_crn": {
@@ -19,7 +19,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 229
+        "line": 227
       }
     },
     "backup_encryption_key_crn": {
@@ -28,7 +28,7 @@
       "description": "The CRN of a Key Protect key that you want to use for encrypting the disk that holds deployment backups. Only used if var.kms_encryption_enabled is set to true. BYOK for backups is available only in US regions us-south and us-east, and in eu-de. Only keys in the us-south and eu-de are durable to region failures. To ensure that your backups are available even if a region failure occurs, use a key from us-south or eu-de. Hyper Protect Crypto Services for IBM Cloud Databases backups is not currently supported. If no value is passed here, the value passed for the 'kms_key_crn' variable is used. And if a HPCS value is passed for var.kms_key_crn, the database backup encryption uses the default encryption keys.",
       "pos": {
         "filename": "variables.tf",
-        "line": 183
+        "line": 181
       }
     },
     "cbr_rules": {
@@ -45,7 +45,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 209
+        "line": 207
       }
     },
     "configuration": {
@@ -57,7 +57,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 104
+        "line": 108
       }
     },
     "existing_kms_instance_guid": {
@@ -69,7 +69,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 199
+        "line": 197
       },
       "immutable": true,
       "computed": true
@@ -84,7 +84,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 163
+        "line": 161
       }
     },
     "kms_key_crn": {
@@ -96,15 +96,15 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 169
+        "line": 167
       },
       "immutable": true
     },
     "member_cpu_count": {
       "name": "member_cpu_count",
       "type": "number",
-      "description": "Allocated dedicated CPU per member. For shared CPU, set to 0. For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling",
-      "default": 0,
+      "description": "Allocated dedicated CPU per member. Minimum number of CPU allowed is 3. For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling",
+      "default": 3,
       "pos": {
         "filename": "variables.tf",
         "line": 63
@@ -114,7 +114,7 @@
       "name": "member_disk_mb",
       "type": "number",
       "description": "Allocated disk per member. For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling",
-      "default": 5120,
+      "default": 20480,
       "pos": {
         "filename": "variables.tf",
         "line": 56
@@ -134,7 +134,7 @@
       "name": "members",
       "type": "number",
       "description": "Allocated number of members. Members can be scaled up but not down.",
-      "default": 2,
+      "default": 3,
       "pos": {
         "filename": "variables.tf",
         "line": 81
@@ -176,7 +176,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 246
+        "line": 244
       }
     },
     "pitr_time": {
@@ -188,7 +188,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 252
+        "line": 250
       }
     },
     "plan_validation": {
@@ -262,7 +262,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 98
+        "line": 102
       },
       "cloud_data_type": "tags",
       "min_length": 1,
@@ -296,18 +296,18 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 88
+        "line": 92
       },
       "options": "public, private, public-and-private"
     },
     "skip_iam_authorization_policy": {
       "name": "skip_iam_authorization_policy",
       "type": "bool",
-      "description": "Set to true to skip the creation of an IAM authorization policy that permits all Enterprise database instances in the resource group to read the encryption key from the Hyper Protect Crypto Services (HPCS) instance. If set to false, pass in a value for the HPCS instance in the  var.existing_kms_instance_guid variable. In addition, no policy is created if var.kms_encryption_enabled is set to false.",
+      "description": "Set to true to skip the creation of an IAM authorization policy that permits all PostgreSQL database instances in the resource group to read the encryption key from the KMS instance. If set to false, pass in a value for the KMS instance in the existing_kms_instance_guid variable. In addition, no policy is created if var.kms_encryption_enabled is set to false.",
       "default": false,
       "pos": {
         "filename": "variables.tf",
-        "line": 193
+        "line": 191
       }
     }
   },

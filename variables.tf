@@ -24,7 +24,7 @@ variable "remote_leader_crn" {
   default     = null
 }
 
-variable "pg_version" { # PRATEEK: TBD - Check the version shown in UI is always different i.e. 12 should be provide others and also name will it be PostgreSQL
+variable "pg_version" {
   description = "Version of the PostgreSQL instance to provision. If no value is passed, the current preferred version of IBM Cloud Databases is used."
   type        = string
   default     = null
@@ -83,7 +83,10 @@ variable "members" {
   description = "Allocated number of members. Members can be scaled up but not down."
   default     = 3
   # Validation is done in the Terraform plan phase by the IBM provider, so no need to add extra validation here.
-  # PRateek : TBD :  member group members must be >= 3 and <= 20 in increments of 1
+  validation {
+    condition     = var.members >= 3 && var.members <= 20
+    error_message = "Members count must be between 3 and 20(inclusive)"
+  }
 }
 
 variable "service_endpoints" {
@@ -126,12 +129,6 @@ variable "configuration" {
 
 variable "auto_scaling" {
   type = object({
-    cpu = object({
-      rate_increase_percent       = optional(number, 10)
-      rate_limit_count_per_member = optional(number, 30)
-      rate_period_seconds         = optional(number, 900)
-      rate_units                  = optional(string, "count")
-    })
     disk = object({
       capacity_enabled             = optional(bool, false)
       free_space_less_than_percent = optional(number, 10)
@@ -193,7 +190,7 @@ variable "backup_encryption_key_crn" {
 
 variable "skip_iam_authorization_policy" {
   type        = bool
-  description = "Set to true to skip the creation of an IAM authorization policy that permits all Enterprise database instances in the resource group to read the encryption key from the Hyper Protect Crypto Services (HPCS) instance. If set to false, pass in a value for the HPCS instance in the  var.existing_kms_instance_guid variable. In addition, no policy is created if var.kms_encryption_enabled is set to false."
+  description = "Set to true to skip the creation of an IAM authorization policy that permits all PostgreSQL database instances in the resource group to read the encryption key from the KMS instance. If set to false, pass in a value for the KMS instance in the existing_kms_instance_guid variable. In addition, no policy is created if var.kms_encryption_enabled is set to false."
   default     = false
 }
 
