@@ -38,7 +38,7 @@ No resources.
 | <a name="input_member_cpu_count"></a> [member\_cpu\_count](#input\_member\_cpu\_count) | Allocated dedicated CPU per member. Minimum number of CPU allowed is 3 . For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling | `number` | `3` | no |
 | <a name="input_member_disk_mb"></a> [member\_disk\_mb](#input\_member\_disk\_mb) | Allocated disk per member. For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling | `number` | `20480` | no |
 | <a name="input_member_memory_mb"></a> [member\_memory\_mb](#input\_member\_memory\_mb) | Allocated memory per member. For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling | `number` | `1024` | no |
-| <a name="input_members"></a> [members](#input\_members) | Allocated number of members. Members can be scaled up but not down. | `number` | `2` | no |
+| <a name="input_members"></a> [members](#input\_members) | Allocated number of members. Members can be scaled up but not down. | `number` | `3` | no |
 | <a name="input_name"></a> [name](#input\_name) | The name given to the Enterprise DB instance. | `string` | n/a | yes |
 | <a name="input_pg_version"></a> [pg\_version](#input\_pg\_version) | Version of the Enterprise DB instance. If no value is passed, the current preferred version of IBM Cloud Databases is used. | `string` | `null` | no |
 | <a name="input_region"></a> [region](#input\_region) | The region where you want to deploy your instance. Must be the same region as the Hyper Protect Crypto Services instance. | `string` | `"us-south"` | no |
