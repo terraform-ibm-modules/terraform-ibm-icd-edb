@@ -4,17 +4,17 @@
 
 variable "resource_group_id" {
   type        = string
-  description = "The resource group ID where EDB instance will be created."
+  description = "The resource group ID where Enterprise DB instance will be created."
 }
 
 variable "name" {
   type        = string
-  description = "The name given to the EDB instance."
+  description = "The name given to the Enterprise DB instance."
 }
 
 variable "plan_validation" {
   type        = bool
-  description = "Enable or disable validating the database parameters for EDB during the plan phase."
+  description = "Enable or disable validating the database parameters for Enterprise DB during the plan phase."
   default     = true
 }
 

@@ -143,7 +143,7 @@
     "name": {
       "name": "name",
       "type": "string",
-      "description": "The name given to the EDB instance.",
+      "description": "The name given to the Enterprise DB instance.",
       "required": true,
       "source": [
         "ibm_database.enterprise_db.name"
@@ -194,7 +194,7 @@
     "plan_validation": {
       "name": "plan_validation",
       "type": "bool",
-      "description": "Enable or disable validating the database parameters for EDB during the plan phase.",
+      "description": "Enable or disable validating the database parameters for Enterprise DB during the plan phase.",
       "default": true,
       "source": [
         "ibm_database.enterprise_db.plan_validation"
@@ -234,7 +234,7 @@
     "resource_group_id": {
       "name": "resource_group_id",
       "type": "string",
-      "description": "The resource group ID where EDB instance will be created.",
+      "description": "The resource group ID where Enterprise DB instance will be created.",
       "required": true,
       "source": [
         "ibm_database.enterprise_db.resource_group_id",
@@ -314,7 +314,7 @@
   "outputs": {
     "cbr_rule_ids": {
       "name": "cbr_rule_ids",
-      "description": "CBR rule ids created to restrict EDB",
+      "description": "CBR rule ids created to restrict Enterprise DB",
       "pos": {
         "filename": "outputs.tf",
         "line": 37
@@ -322,7 +322,7 @@
     },
     "crn": {
       "name": "crn",
-      "description": "EDB instance crn",
+      "description": "Enterprise DB instance crn",
       "value": "ibm_database.enterprise_db.resource_crn",
       "pos": {
         "filename": "outputs.tf",
@@ -332,7 +332,7 @@
     },
     "guid": {
       "name": "guid",
-      "description": "EDB instance guid",
+      "description": "Enterprise DB instance guid",
       "value": "ibm_database.enterprise_db.guid",
       "pos": {
         "filename": "outputs.tf",
@@ -342,7 +342,7 @@
     },
     "id": {
       "name": "id",
-      "description": "EDB instance id",
+      "description": "Enterprise DB instance id",
       "value": "ibm_database.enterprise_db.id",
       "pos": {
         "filename": "outputs.tf",
@@ -371,7 +371,7 @@
     },
     "version": {
       "name": "version",
-      "description": "EDB instance version",
+      "description": "Enterprise DB instance version",
       "value": "ibm_database.enterprise_db.version",
       "pos": {
         "filename": "outputs.tf",

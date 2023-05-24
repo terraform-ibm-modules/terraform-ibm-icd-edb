@@ -3,22 +3,22 @@
 ##############################################################################
 
 output "id" {
-  description = "EDB instance id"
+  description = "Enterprise DB instance id"
   value       = ibm_database.enterprise_db.id
 }
 
 output "guid" {
-  description = "EDB instance guid"
+  description = "Enterprise DB instance guid"
   value       = ibm_database.enterprise_db.guid
 }
 
 output "version" {
-  description = "EDB instance version"
+  description = "Enterprise DB instance version"
   value       = ibm_database.enterprise_db.version
 }
 
 output "crn" {
-  description = "EDB instance crn"
+  description = "Enterprise DB instance crn"
   value       = ibm_database.enterprise_db.resource_crn
 }
 
@@ -35,6 +35,6 @@ output "service_credentials_object" {
 }
 
 output "cbr_rule_ids" {
-  description = "CBR rule ids created to restrict EDB"
+  description = "CBR rule ids created to restrict Enterprise DB"
   value       = module.cbr_rule[*].rule_id
 }

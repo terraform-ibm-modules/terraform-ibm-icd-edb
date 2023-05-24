@@ -4,13 +4,13 @@
 
 ## Usage
 
-> WARNING: **This module does not support major version upgrade or updates to encryption and backup encryption keys**: To upgrade version create a new postgresql instance with the updated version and follow the [Upgrading PostgreSQL docs](https://cloud.ibm.com/docs/databases-for-postgresql?topic=databases-for-postgresql-upgrading&interface=cli)
+> WARNING: **This module does not support major version upgrade or updates to encryption and backup encryption keys**
 
 > NOTE: Currently the database encryption for backups supports only Key Protect keys, not Hyper Protect Crypto keys. If enabling KMS encryption and no value is passed for 'backup_encryption_key_crn', the value of 'kms_key_crn' is used. If this value is a HPCS key, the module will default the backup encryption to use randomly generated keys due to this current limitation. More info: https://cloud.ibm.com/docs/cloud-databases?topic=cloud-databases-hpcs
 
 ```hcl
 provider "ibm" {
-  ibmcloud_api_key = "XXXXXXXXXX"
+  ibmcloud_api_key = "xxXXxx"
   region           = "us-south"
 }
 
@@ -75,14 +75,14 @@ You need the following permissions to run this module.
 | <a name="input_member_disk_mb"></a> [member\_disk\_mb](#input\_member\_disk\_mb) | Allocated disk per member. For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling | `number` | `20480` | no |
 | <a name="input_member_memory_mb"></a> [member\_memory\_mb](#input\_member\_memory\_mb) | Allocated memory per-member. See the following doc for supported values: https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling | `number` | `1024` | no |
 | <a name="input_members"></a> [members](#input\_members) | Allocated number of members. Members can be scaled up but not down. | `number` | `3` | no |
-| <a name="input_name"></a> [name](#input\_name) | The name given to the EDB instance. | `string` | n/a | yes |
+| <a name="input_name"></a> [name](#input\_name) | The name given to the Enterprise DB instance. | `string` | n/a | yes |
 | <a name="input_pg_version"></a> [pg\_version](#input\_pg\_version) | Version of the PostgreSQL instance to provision. If no value is passed, the current preferred version of IBM Cloud Databases is used. | `string` | `null` | no |
 | <a name="input_pitr_id"></a> [pitr\_id](#input\_pitr\_id) | (Optional) The ID of the source deployment EDB instance that you want to recover back to. The EDB instance is expected to be in an up and in running state. | `string` | `null` | no |
 | <a name="input_pitr_time"></a> [pitr\_time](#input\_pitr\_time) | (Optional) The timestamp in UTC format (%Y-%m-%dT%H:%M:%SZ) that you want to restore to. To retrieve the timestamp, run the command (ibmcloud cdb postgresql earliest-pitr-timestamp <deployment name or CRN>). For more info on Point-in-time Recovery, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-pitr | `string` | `null` | no |
-| <a name="input_plan_validation"></a> [plan\_validation](#input\_plan\_validation) | Enable or disable validating the database parameters for EDB during the plan phase. | `bool` | `true` | no |
+| <a name="input_plan_validation"></a> [plan\_validation](#input\_plan\_validation) | Enable or disable validating the database parameters for Enterprise DB during the plan phase. | `bool` | `true` | no |
 | <a name="input_region"></a> [region](#input\_region) | The region where you want to deploy your instance. | `string` | `"us-south"` | no |
 | <a name="input_remote_leader_crn"></a> [remote\_leader\_crn](#input\_remote\_leader\_crn) | A CRN of the leader database to make the replica(read-only) deployment. The leader database is created by a database deployment with the same service ID. A read-only replica is set up to replicate all of your data from the leader deployment to the replica deployment by using asynchronous replication. For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-read-only-replicas | `string` | `null` | no |
-| <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | The resource group ID where EDB instance will be created. | `string` | n/a | yes |
+| <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | The resource group ID where Enterprise DB instance will be created. | `string` | n/a | yes |
 | <a name="input_resource_tags"></a> [resource\_tags](#input\_resource\_tags) | Optional list of tags to be added to the EDB instance and the associated service credentials (if creating). | `list(string)` | `[]` | no |
 | <a name="input_service_credential_names"></a> [service\_credential\_names](#input\_service\_credential\_names) | Map of name, role for service credentials that you want to create for the database | `map(string)` | `{}` | no |
 | <a name="input_service_endpoints"></a> [service\_endpoints](#input\_service\_endpoints) | Specify whether you want to enable the public, private, or both service endpoints. Supported values are 'public', 'private', or 'public-and-private'. | `string` | `"private"` | no |
@@ -92,13 +92,13 @@ You need the following permissions to run this module.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_cbr_rule_ids"></a> [cbr\_rule\_ids](#output\_cbr\_rule\_ids) | CBR rule ids created to restrict EDB |
-| <a name="output_crn"></a> [crn](#output\_crn) | EDB instance crn |
-| <a name="output_guid"></a> [guid](#output\_guid) | EDB instance guid |
-| <a name="output_id"></a> [id](#output\_id) | EDB instance id |
+| <a name="output_cbr_rule_ids"></a> [cbr\_rule\_ids](#output\_cbr\_rule\_ids) | CBR rule ids created to restrict Enterprise DB |
+| <a name="output_crn"></a> [crn](#output\_crn) | Enterprise DB instance crn |
+| <a name="output_guid"></a> [guid](#output\_guid) | Enterprise DB instance guid |
+| <a name="output_id"></a> [id](#output\_id) | Enterprise DB instance id |
 | <a name="output_service_credentials_json"></a> [service\_credentials\_json](#output\_service\_credentials\_json) | Service credentials json map |
 | <a name="output_service_credentials_object"></a> [service\_credentials\_object](#output\_service\_credentials\_object) | Service credentials object |
-| <a name="output_version"></a> [version](#output\_version) | EDB instance version |
+| <a name="output_version"></a> [version](#output\_version) | Enterprise DB instance version |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- BEGIN CONTRIBUTING HOOK -->
 

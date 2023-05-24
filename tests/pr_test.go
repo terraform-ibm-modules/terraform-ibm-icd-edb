@@ -52,7 +52,7 @@ func TestRunFSCloudExample(t *testing.T) {
 		TerraformVars: map[string]interface{}{
 			"existing_kms_instance_guid": permanentResources["hpcs_south"],
 			"kms_key_crn":                permanentResources["hpcs_south_root_key_crn"],
-			"pg_version":                 "12", // Always lock this test into the latest supported EDB version
+			"pg_version":                 "12", // Always lock this test into the latest supported Enterprise DB version
 		},
 	})
 
@@ -74,7 +74,7 @@ func TestRunUpgradeCompleteExample(t *testing.T) {
 		BestRegionYAMLPath: regionSelectionPath,
 		ResourceGroup:      resourceGroup,
 		TerraformVars: map[string]interface{}{
-			"pg_version": "11", // Always lock to the lowest supported Postgres version
+			"pg_version": "12", // Always lock to the lowest supported Enterprise DB version
 		},
 	})
 
