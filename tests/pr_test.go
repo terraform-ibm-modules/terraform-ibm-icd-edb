@@ -52,7 +52,7 @@ func TestRunFSCloudExample(t *testing.T) {
 		TerraformVars: map[string]interface{}{
 			"existing_kms_instance_guid": permanentResources["hpcs_south"],
 			"kms_key_crn":                permanentResources["hpcs_south_root_key_crn"],
-			"pg_version":                 "14", // Always lock this test into the latest supported Postgres version
+			"pg_version":                 "12", // Always lock this test into the latest supported EDB version
 		},
 	})
 
