@@ -56,11 +56,12 @@ module "enterprise_db" {
   resource_group_id          = module.resource_group.resource_group_id
   name                       = "${var.prefix}-edb"
   region                     = var.region
-  pg_version                 = var.pg_version
+  edb_version                = var.edb_version
   kms_key_crn                = var.kms_key_crn
   existing_kms_instance_guid = var.existing_kms_instance_guid
   resource_tags              = var.resource_tags
   service_credential_names   = var.service_credential_names
+  access_tags                = var.access_tags
   auto_scaling               = var.auto_scaling
   cbr_rules = [
     {

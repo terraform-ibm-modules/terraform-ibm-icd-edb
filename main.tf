@@ -49,7 +49,7 @@ resource "ibm_database" "enterprise_db" {
   backup_id                            = var.backup_crn
   plan_validation                      = var.plan_validation
   remote_leader_id                     = var.remote_leader_crn
-  version                              = var.pg_version
+  version                              = var.edb_version
   tags                                 = var.resource_tags
   adminpassword                        = var.admin_pass
   service_endpoints                    = var.service_endpoints
@@ -127,6 +127,13 @@ resource "ibm_database" "enterprise_db" {
   timeouts {
     create = "120m" # Extending provisioning time to 120 minutes
   }
+}
+
+resource "ibm_resource_tag" "enterprisedb_tag" {
+  count       = length(var.access_tags) == 0 ? 0 : 1
+  resource_id = ibm_database.enterprise_db.resource_crn
+  tags        = var.access_tags
+  tag_type    = "access"
 }
 
 ##############################################################################

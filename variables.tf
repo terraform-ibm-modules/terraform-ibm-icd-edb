@@ -24,17 +24,17 @@ variable "remote_leader_crn" {
   default     = null
 }
 
-variable "pg_version" {
+variable "edb_version" {
   description = "Version of the PostgreSQL instance to provision. If no value is passed, the current preferred version of IBM Cloud Databases is used."
   type        = string
   default     = null
   validation {
     condition = anytrue([
-      var.pg_version == null,
-      var.pg_version == "14",
-      var.pg_version == "13",
-      var.pg_version == "12",
-      var.pg_version == "11"
+      var.edb_version == null,
+      var.edb_version == "14",
+      var.edb_version == "13",
+      var.edb_version == "12",
+      var.edb_version == "11"
     ])
     error_message = "Version must be 11 or 12 or 13 or 14. If no value passed, the current ICD preferred version is used."
   }
@@ -101,8 +101,21 @@ variable "service_endpoints" {
 
 variable "resource_tags" {
   type        = list(string)
-  description = "Optional list of tags to be added to the EDB instance and the associated service credentials (if creating)."
+  description = "Optional list of tags to be added to the Enterprise DB instance and the associated service credentials (if creating)."
   default     = []
+}
+
+variable "access_tags" {
+  type        = list(string)
+  description = "A list of access tags to apply to the Enterprise DB instance created by the module, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial for more details"
+  default     = []
+
+  validation {
+    condition = alltrue([
+      for tag in var.access_tags : can(regex("[\\w\\-_\\.]+:[\\w\\-_\\.]+", tag)) && length(tag) <= 128
+    ])
+    error_message = "Tags must match the regular expression \"[\\w\\-_\\.]+:[\\w\\-_\\.]+\", see https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#limits for more details"
+  }
 }
 
 variable "configuration" {

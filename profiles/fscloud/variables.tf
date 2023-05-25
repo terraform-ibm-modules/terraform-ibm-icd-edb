@@ -17,7 +17,7 @@ variable "existing_kms_instance_guid" {
   type        = string
 }
 
-variable "pg_version" {
+variable "edb_version" {
   description = "Version of the Enterprise DB instance. If no value is passed, the current preferred version of IBM Cloud Databases is used."
   type        = string
   default     = null
@@ -71,6 +71,12 @@ variable "members" {
 variable "resource_tags" {
   type        = list(string)
   description = "Optional list of tags to be added to the Enterprise DB instance."
+  default     = []
+}
+
+variable "access_tags" {
+  type        = list(string)
+  description = "A list of access tags to apply to the Enterprise DB instance created by the module, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial for more details"
   default     = []
 }
 

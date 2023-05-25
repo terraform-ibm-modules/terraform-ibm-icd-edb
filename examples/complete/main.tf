@@ -71,7 +71,7 @@ module "enterprise_db" {
   resource_group_id          = module.resource_group.resource_group_id
   name                       = "${var.prefix}-edb"
   region                     = var.region
-  pg_version                 = var.pg_version
+  edb_version                = var.edb_version
   admin_pass                 = var.admin_pass
   users                      = var.users
   kms_encryption_enabled     = true
@@ -79,6 +79,7 @@ module "enterprise_db" {
   existing_kms_instance_guid = module.key_protect_all_inclusive.key_protect_guid
   resource_tags              = var.resource_tags
   service_credential_names   = var.service_credential_names
+  access_tags                = var.access_tags
   cbr_rules = [
     {
       description      = "${var.prefix}-edb access only from vpc"
