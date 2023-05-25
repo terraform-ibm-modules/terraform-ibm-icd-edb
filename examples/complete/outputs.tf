@@ -32,3 +32,13 @@ output "cbr_rule_ids" {
   description = "CBR rule ids created to restrict Enterprise DB"
   value       = module.enterprise_db.cbr_rule_ids
 }
+
+output "hostname" {
+  description = "EnterpriseDB instance hostname"
+  value       = module.enterprise_db.hostname
+}
+
+output "port" {
+  description = "EnterpriseDB instance port"
+  value       = module.enterprise_db.port
+}

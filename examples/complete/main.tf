@@ -72,6 +72,8 @@ module "enterprise_db" {
   name                       = "${var.prefix}-edb"
   region                     = var.region
   pg_version                 = var.pg_version
+  admin_pass                 = var.admin_pass
+  users                      = var.users
   kms_encryption_enabled     = true
   kms_key_crn                = module.key_protect_all_inclusive.keys["icd-edb.${var.prefix}-edb"].crn
   existing_kms_instance_guid = module.key_protect_all_inclusive.key_protect_guid

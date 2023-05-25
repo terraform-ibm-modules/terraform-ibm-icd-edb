@@ -51,6 +51,7 @@ resource "ibm_database" "enterprise_db" {
   remote_leader_id                     = var.remote_leader_crn
   version                              = var.pg_version
   tags                                 = var.resource_tags
+  adminpassword                        = var.admin_pass
   service_endpoints                    = var.service_endpoints
   configuration                        = var.configuration != null ? jsonencode(var.configuration) : null
   key_protect_key                      = var.kms_key_crn
@@ -58,6 +59,15 @@ resource "ibm_database" "enterprise_db" {
   point_in_time_recovery_deployment_id = var.pitr_id
   point_in_time_recovery_time          = var.pitr_time
 
+  dynamic "users" {
+    for_each = (var.users != null ? var.users : [])
+    content {
+      name     = users.value.name
+      password = users.value.password
+      type     = users.value.type
+      role     = (users.value.role != "" ? users.value.role : null)
+    }
+  }
   group {
     group_id = "member" # Only member type is allowed for EDB
     memory {
@@ -186,4 +196,12 @@ locals {
       }
     }
   } : null
+}
+
+data "ibm_database_connection" "database_connection" {
+  count         = length(var.users) > 0 ? length(var.users) : 0
+  endpoint_type = var.service_endpoints
+  deployment_id = ibm_database.enterprise_db.id
+  user_id       = var.users[count.index].name
+  user_type     = var.users[count.index].type
 }
