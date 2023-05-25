@@ -10,7 +10,7 @@
 
 ```hcl
 provider "ibm" {
-  ibmcloud_api_key = "xxXXxx"
+  ibmcloud_api_key = "xxXXxx" # pragma: allowlist secret
   region           = "us-south"
 }
 

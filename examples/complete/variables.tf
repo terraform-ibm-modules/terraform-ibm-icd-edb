@@ -43,6 +43,7 @@ variable "edb_version" {
 variable "admin_pass" {
   type        = string
   default     = null
+  sensitive   = true
   description = "The password for the database administrator. If not specified, an empty string is provided for the password and the user ID cannot be used. In this case, more users must be specified in a user block."
 }
 
@@ -54,6 +55,7 @@ variable "users" {
     role     = optional(string)
   }))
   default     = []
+  sensitive   = true
   description = "A list of users that you want to create on the database. Multiple blocks are allowed. The user password must be in the range of 10-32 characters."
 }
 

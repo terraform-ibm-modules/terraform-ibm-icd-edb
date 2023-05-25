@@ -2,6 +2,8 @@
 package test
 
 import (
+	"crypto/rand"
+	"encoding/base64"
 	"log"
 	"os"
 	"testing"
@@ -12,7 +14,7 @@ import (
 )
 
 // Use existing resource group
-const resourceGroup = "geretain-test-postgres"
+const resourceGroup = "geretain-test-enterprisedb"
 
 // Restricting due to limited availability of BYOK in certain regions
 const regionSelectionPath = "../common-dev-assets/common-go-assets/icd-region-prefs.yaml"
@@ -53,7 +55,7 @@ func TestRunFSCloudExample(t *testing.T) {
 			"access_tags":                permanentResources["accessTags"],
 			"existing_kms_instance_guid": permanentResources["hpcs_south"],
 			"kms_key_crn":                permanentResources["hpcs_south_root_key_crn"],
-			"pg_version":                 "12", // Always lock this test into the latest supported Enterprise DB version
+			"edb_version":                "12", // Always lock this test into the latest supported Enterprise DB version
 		},
 	})
 
@@ -68,6 +70,22 @@ func TestRunUpgradeCompleteExample(t *testing.T) {
 	// TODO: Remove this line after the first merge to primary branch is complete to enable upgrade test
 	t.Skip("Skipping upgrade test until initial code is in primary branch")
 
+	// Generate a 10 char long random string for the admin_pass
+	randomBytes := make([]byte, 10)
+	_, err := rand.Read(randomBytes)
+	randomPass := base64.URLEncoding.EncodeToString(randomBytes)[:10]
+
+	// User Object
+	type User struct {
+		Name     string
+		Password string
+		Type     string
+	}
+
+	users := []User{
+		{Name: "testuser", Password: randomPass, Type: "database"}, // pragma: allowlist secret
+	}
+
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
 		Testing:            t,
 		TerraformDir:       "examples/complete",
@@ -75,9 +93,9 @@ func TestRunUpgradeCompleteExample(t *testing.T) {
 		BestRegionYAMLPath: regionSelectionPath,
 		ResourceGroup:      resourceGroup,
 		TerraformVars: map[string]interface{}{
-			"pg_version": "12",                                                                                   // Always lock to the lowest supported Enterprise DB version
-			"users":      "[{\n name = \"testuser\",\n password = \"password1234\" \n type = \"database\"\n  }]", // pragma: allowlist secret
-			"admin_pass": "password1234",                                                                         // pragma: allowlist secret
+			"edb_version": "12", // Always lock to the lowest supported Postgres version
+			"users":       users,
+			"admin_pass":  randomPass,
 		},
 	})
 
