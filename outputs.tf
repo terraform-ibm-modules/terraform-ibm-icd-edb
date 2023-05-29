@@ -40,11 +40,11 @@ output "cbr_rule_ids" {
 }
 
 output "hostname" {
-  description = "Database hostname"
-  value       = flatten(data.ibm_database_connection.database_connection[*].postgres[*].hosts[*].hostname)
+  description = "Database hostname. Only contains value when var.service_credential_names or var.users are set."
+  value       = nonsensitive(local.hostname)
 }
 
 output "port" {
-  description = "Database port"
-  value       = flatten(data.ibm_database_connection.database_connection[*].postgres[*].hosts[*].port)
+  description = "Database port. Only contains value when var.service_credential_names or var.users are set."
+  value       = nonsensitive(local.port)
 }

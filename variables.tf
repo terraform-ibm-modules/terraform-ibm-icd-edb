@@ -138,7 +138,7 @@ variable "configuration" {
 
 variable "admin_pass" {
   type        = string
-  description = "The password for the database administrator. If not specified, an empty string is provided for the password and the user ID cannot be used. In this case, more users must be specified in a user block. The user password must be in the range of 10-32 characters."
+  description = "The password for the database administrator. If the admin password is null then the admin user ID cannot be accessed. More users can be specified in a user block. The admin password must be in the range of 10-32 characters."
   sensitive   = true
   default     = null
 }
@@ -152,7 +152,7 @@ variable "users" {
   }))
   default     = []
   sensitive   = true
-  description = "A list of users that you want to create on the database. Multiple blocks are allowed. The user password must be in the range of 10-32 characters."
+  description = "A list of users that you want to create on the database. Multiple blocks are allowed. The user password must be in the range of 10-32 characters. Be warned that in most case using IAM service credentials (via the var.service_credential_names) is sufficient to control access to the Enterprise Db instance. This blocks creates native enterprise database users, more info on that can be found here https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-user-management&interface=api"
 }
 
 ##############################################################
