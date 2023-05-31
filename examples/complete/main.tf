@@ -115,8 +115,8 @@ resource "ibm_is_security_group" "sg1" {
   vpc  = ibm_is_vpc.example_vpc.id
 }
 
-resource "ibm_is_virtual_endpoint_gateway" "pgvpe" {
-  name = "${var.prefix}-vpe-to-pg"
+resource "ibm_is_virtual_endpoint_gateway" "edbvpe" {
+  name = "${var.prefix}-vpe-to-edb"
   target {
     crn           = module.enterprise_db.crn
     resource_type = "provider_cloud_service"
@@ -124,7 +124,7 @@ resource "ibm_is_virtual_endpoint_gateway" "pgvpe" {
   vpc = ibm_is_vpc.example_vpc.id
   ips {
     subnet = ibm_is_subnet.testacc_subnet.id
-    name   = "${var.prefix}-pg-access-reserved-ip"
+    name   = "${var.prefix}-edb-access-reserved-ip"
   }
   resource_group  = module.resource_group.resource_group_id
   security_groups = [ibm_is_security_group.sg1.id]
