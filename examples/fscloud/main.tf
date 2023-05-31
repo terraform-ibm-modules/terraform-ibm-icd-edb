@@ -63,6 +63,8 @@ module "enterprise_db" {
   service_credential_names   = var.service_credential_names
   access_tags                = var.access_tags
   auto_scaling               = var.auto_scaling
+  admin_pass                 = var.admin_pass
+  users                      = var.users
   cbr_rules = [
     {
       description      = "${var.prefix}-edb access only from vpc"
