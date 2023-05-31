@@ -21,3 +21,13 @@ output "crn" {
   description = "Enterprise DB instance crn"
   value       = module.enterprise_db.crn
 }
+
+output "hostname" {
+  description = "Enterprise DB instance hostname"
+  value       = module.enterprise_db.hostname
+}
+
+output "port" {
+  description = "Enterprise DB instance port"
+  value       = module.enterprise_db.port
+}

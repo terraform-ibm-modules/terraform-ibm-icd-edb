@@ -12,7 +12,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 108
+        "line": 107
       },
       "min_length": 1,
       "max_length": 128,
@@ -32,7 +32,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 139
+        "line": 138
       }
     },
     "auto_scaling": {
@@ -41,7 +41,7 @@
       "description": "Optional rules to allow the database to increase resources in response to usage. Only a single autoscaling block is allowed. Make sure you understand the effects of autoscaling, especially for production environments. See https://ibm.biz/autoscaling-considerations in the IBM Cloud Docs.",
       "pos": {
         "filename": "variables.tf",
-        "line": 162
+        "line": 161
       }
     },
     "backup_crn": {
@@ -53,7 +53,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 259
+        "line": 258
       }
     },
     "backup_encryption_key_crn": {
@@ -62,7 +62,7 @@
       "description": "The CRN of a Key Protect key that you want to use for encrypting the disk that holds deployment backups. Only used if var.kms_encryption_enabled is set to true. BYOK for backups is available only in US regions us-south and us-east, and in eu-de. Only keys in the us-south and eu-de are durable to region failures. To ensure that your backups are available even if a region failure occurs, use a key from us-south or eu-de. Hyper Protect Crypto Services for IBM Cloud Databases backups is not currently supported. If no value is passed here, the value passed for the 'kms_key_crn' variable is used. And if a HPCS value is passed for var.kms_key_crn, the database backup encryption uses the default encryption keys.",
       "pos": {
         "filename": "variables.tf",
-        "line": 213
+        "line": 212
       }
     },
     "cbr_rules": {
@@ -79,7 +79,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 239
+        "line": 238
       }
     },
     "configuration": {
@@ -91,7 +91,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 121
+        "line": 120
       }
     },
     "edb_version": {
@@ -117,7 +117,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 229
+        "line": 228
       },
       "immutable": true,
       "computed": true
@@ -132,7 +132,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 193
+        "line": 192
       }
     },
     "kms_key_crn": {
@@ -144,7 +144,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 199
+        "line": 198
       },
       "immutable": true
     },
@@ -210,7 +210,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 276
+        "line": 275
       }
     },
     "pitr_time": {
@@ -222,7 +222,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 282
+        "line": 281
       }
     },
     "plan_validation": {
@@ -296,7 +296,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 102
+        "line": 101
       },
       "cloud_data_type": "tags",
       "min_length": 1,
@@ -332,7 +332,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 92
+        "line": 91
       },
       "options": "public, private, public-and-private"
     },
@@ -343,7 +343,7 @@
       "default": false,
       "pos": {
         "filename": "variables.tf",
-        "line": 223
+        "line": 222
       }
     },
     "users": {
@@ -359,7 +359,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 146
+        "line": 145
       }
     }
   },
