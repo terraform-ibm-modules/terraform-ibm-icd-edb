@@ -20,14 +20,6 @@ module "enterprise_db" {
   members                       = var.members
   service_credential_names      = var.service_credential_names
   auto_scaling                  = var.auto_scaling
-  adminpassword                 = var.admin_pass
-  dynamic "users" {
-    for_each = nonsensitive(var.users != null ? var.users : [])
-    content {
-      name     = users.value.name
-      password = users.value.password
-      type     = users.value.type
-      role     = (users.value.role != "" ? users.value.role : null)
-    }
-  }
+  admin_pass                    = var.admin_pass
+  users                         = var.users
 }

@@ -31,6 +31,13 @@ You need the following permissions to run this module.
     - **Databases for EnterpriseDB** service
         - `Editor` role access
 
+To attach access management tags to resources in this module, you need the following permissions.
+
+- IAM Services
+    - **Tagging** service
+        - `Administrator` platform access
+
+
 <!-- BEGIN EXAMPLES HOOK -->
 ## Examples
 

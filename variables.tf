@@ -82,7 +82,6 @@ variable "members" {
   type        = number
   description = "Allocated number of members. Members can be scaled up but not down."
   default     = 3
-  # Validation is done in the Terraform plan phase by the IBM provider, so no need to add extra validation here.
   validation {
     condition     = var.members >= 3 && var.members <= 20
     error_message = "Members count must be between 3 and 20(inclusive)"
