@@ -21,7 +21,7 @@ module "enterprise_db_pitr" {
   region            = var.region
   resource_tags     = var.resource_tags
   access_tags       = var.access_tags
-  member_memory_mb  = 3072 # 1*3*1024
+  member_memory_mb  = 3072  # 1*3*1024
   member_disk_mb    = 61440 # 3*20**1024
   member_cpu_count  = 9
   members           = var.members
