@@ -90,7 +90,7 @@ func TestRunUpgradeCompleteExample(t *testing.T) {
 					"type":     "database",
 				},
 			},
-			"admin_pass": randomPass,
+			"admin_pass": randomPass, // pragma: allowlist secret
 		},
 	})
 
