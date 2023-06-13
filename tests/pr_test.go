@@ -14,7 +14,7 @@ import (
 )
 
 // Use existing resource group
-const resourceGroup = "geretain-test-resources" //"geretain-test-enterprisedb"
+const resourceGroup = "geretain-test-enterprisedb"
 
 // Restricting due to limited availability of BYOK in certain regions
 const regionSelectionPath = "../common-dev-assets/common-go-assets/icd-region-prefs.yaml"
@@ -66,9 +66,6 @@ func TestRunFSCloudExample(t *testing.T) {
 
 func TestRunUpgradeCompleteExample(t *testing.T) {
 	t.Parallel()
-
-	// TODO: Remove this line after the first merge to primary branch is complete to enable upgrade test
-	t.Skip("Skipping upgrade test until initial code is in primary branch")
 
 	// Generate a 10 char long random string for the admin_pass
 	randomBytes := make([]byte, 10)
