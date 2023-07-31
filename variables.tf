@@ -100,7 +100,7 @@ variable "service_endpoints" {
 
 variable "resource_tags" {
   type        = list(string)
-  description = "Optional list of tags to be added to the Enterprise DB instance and the associated service credentials (if creating)."
+  description = "Optional list of tags to be added to the Enterprise DB instance."
   default     = []
 }
 

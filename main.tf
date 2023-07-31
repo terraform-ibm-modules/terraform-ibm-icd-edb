@@ -182,7 +182,6 @@ resource "ibm_resource_key" "service_credentials" {
   name                 = each.key
   role                 = each.value
   resource_instance_id = ibm_database.enterprise_db.id
-  tags                 = var.resource_tags
 }
 
 locals {
