@@ -57,7 +57,6 @@ resource "ibm_database" "enterprise_db" {
   location          = var.region
   plan              = "standard" # Only standard plan is available for edb
   backup_id         = var.backup_crn
-  plan_validation   = var.plan_validation
   remote_leader_id  = var.remote_leader_crn
   version           = var.edb_version
   tags              = var.resource_tags
