@@ -24,4 +24,4 @@ repository:
   # and update the description to the current repo description.
   description: "A module for deploying IBM Cloud® Databases for EnterpriseDB"
 
-  topics: core-team, terraform, ibm-cloud, terraform-module, edb, enterpriseDB
+  topics: core-team, terraform, ibm-cloud, terraform-module, edb, enterprise-db
