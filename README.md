@@ -10,7 +10,20 @@ This module implements an instance of the IBM Cloud Databases for EnterpriseDB s
 
 :exclamation: The module does not support major version upgrades or updates to encryption and backup encryption keys. To upgrade the version, create another instance of Databases for EnterpriseDBs with the updated version.
 
-## Usage
+<!-- Below content is automatically populated via pre-commit hook -->
+<!-- BEGIN OVERVIEW HOOK -->
+## Overview
+* [terraform-ibm-icd-edb](#terraform-ibm-icd-edb)
+* [Examples](./examples)
+    * [Basic with read-only replica example](./examples/basic)
+    * [Complete example with BYOK encryption, CBR rules and VPE creation](./examples/complete)
+    * [Financial Services Cloud profile example with autoscaling enabled](./examples/fscloud)
+    * [Point in time recovery example (PITR)](./examples/pitr)
+    * [Restore from backup example](./examples/backup)
+* [Contributing](#contributing)
+<!-- END OVERVIEW HOOK -->
+
+### Usage
 IBM Cloud Databases supports only Key Protect encryption for backups, not Hyper Protect Crypto Services. If you enable key management encryption and no value is passed for 'backup_encryption_key_crn', the value of 'kms_key_crn' is used. And if a HPCS value is set for `kms_key_crn`, the database backup encryption uses the default encryption keys. For more information, see [Hyper Protect Crypto Services Integration](https://cloud.ibm.com/docs/cloud-databases?topic=cloud-databases-hpcs) in the IBM Cloud Docs.
 
 ```hcl
@@ -28,7 +41,7 @@ module "enterprise_db" {
 }
 ```
 
-## Required IAM access policies
+### Required IAM access policies
 
 You need the following permissions to run this module.
 
@@ -42,16 +55,6 @@ To attach access management tags to resources in this module, you need the follo
     - **Tagging** service
         - `Administrator` platform access
 
-
-<!-- BEGIN EXAMPLES HOOK -->
-## Examples
-
-- [ Restore from backup example](examples/backup)
-- [ Basic with read-only replica example](examples/basic)
-- [ Complete example with BYOK encryption, CBR rules and VPE creation](examples/complete)
-- [ Financial Services Cloud profile example with autoscaling enabled](examples/fscloud)
-- [ Point in time recovery example (PITR)](examples/pitr)
-<!-- END EXAMPLES HOOK -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ### Requirements
 
