@@ -53,7 +53,7 @@ module "cbr_zone" {
 ##############################################################################
 
 module "enterprise_db" {
-  source                     = "../../profiles/fscloud"
+  source                     = "../../modules/fscloud"
   resource_group_id          = module.resource_group.resource_group_id
   name                       = "${var.prefix}-edb"
   region                     = var.region
