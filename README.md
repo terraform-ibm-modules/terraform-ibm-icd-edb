@@ -14,6 +14,8 @@ This module implements an instance of the IBM Cloud Databases for EnterpriseDB s
 <!-- BEGIN OVERVIEW HOOK -->
 ## Overview
 * [terraform-ibm-icd-edb](#terraform-ibm-icd-edb)
+* [Submodules](./modules)
+    * [fscloud](./modules/fscloud)
 * [Examples](./examples)
     * [Basic with read-only replica example](./examples/basic)
     * [Complete example with BYOK encryption, CBR rules and VPE creation](./examples/complete)
