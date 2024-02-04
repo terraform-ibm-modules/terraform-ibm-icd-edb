@@ -14,14 +14,23 @@ module "resource_group" {
 ##############################################################################
 
 module "key_protect_all_inclusive" {
-  source            = "git::https://github.com/terraform-ibm-modules/terraform-ibm-key-protect-all-inclusive.git?ref=v4.4.2"
+  source            = "git::https://github.com/terraform-ibm-modules/terraform-ibm-key-protect-all-inclusive.git?ref=v4.6.0"
   resource_group_id = module.resource_group.resource_group_id
   # Note: Database instance and Key Protect must be created in the same region when using BYOK
   # See https://cloud.ibm.com/docs/cloud-databases?topic=cloud-databases-key-protect&interface=ui#key-byok
   region                    = var.region
   key_protect_instance_name = "${var.prefix}-kp"
   resource_tags             = var.resource_tags
-  key_map                   = { "icd-edb" = ["${var.prefix}-edb"] }
+  keys = [
+    {
+      key_ring_name = "icd-edb"
+      keys = [
+        {
+          key_name = "${var.prefix}-edb"
+        }
+      ]
+    }
+  ]
 }
 
 ##############################################################################
@@ -77,7 +86,7 @@ module "enterprise_db" {
   users                      = var.users
   kms_encryption_enabled     = true
   kms_key_crn                = module.key_protect_all_inclusive.keys["icd-edb.${var.prefix}-edb"].crn
-  existing_kms_instance_guid = module.key_protect_all_inclusive.key_protect_guid
+  existing_kms_instance_guid = module.key_protect_all_inclusive.kms_guid
   resource_tags              = var.resource_tags
   service_credential_names   = var.service_credential_names
   access_tags                = var.access_tags
