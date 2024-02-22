@@ -31,7 +31,7 @@ var sharedInfoSvc *cloudinfo.CloudInfoService
 // TestMain will be run before any parallel tests, used to read data from yaml for use with tests
 func TestMain(m *testing.M) {
 	sharedInfoSvc, _ = cloudinfo.NewCloudInfoServiceFromEnv("TF_VAR_ibmcloud_api_key", cloudinfo.CloudInfoServiceOptions{})
-	
+
 	var err error
 	permanentResources, err = common.LoadMapFromYaml(yamlLocation)
 	if err != nil {
