@@ -75,8 +75,8 @@ func testPlanICDVersions(t *testing.T, version string) {
 	t.Parallel()
 
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
-		Testing:            t,
-		TerraformDir:       "examples/basic",
+		Testing:      t,
+		TerraformDir: "examples/basic",
 		TerraformVars: map[string]interface{}{
 			"edb_version": version,
 		},
