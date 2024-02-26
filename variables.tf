@@ -19,18 +19,15 @@ variable "remote_leader_crn" {
 }
 
 variable "edb_version" {
-  description = "Version of the Enterprise DB instance to provision. If no value is passed, the current preferred version of IBM Cloud Databases is used."
+  description = "Version of the Enterprise DB instance to provision. If no value is passed, the current preferred version of IBM Cloud Databases is used. For our version policy, see https://cloud.ibm.com/docs/cloud-databases?topic=cloud-databases-versioning-policy for more details"
   type        = string
   default     = null
   validation {
     condition = anytrue([
       var.edb_version == null,
-      var.edb_version == "14",
-      var.edb_version == "13",
-      var.edb_version == "12",
-      var.edb_version == "11"
+      var.edb_version == "12"
     ])
-    error_message = "Version must be 11 or 12 or 13 or 14. If no value passed, the current ICD preferred version is used."
+    error_message = "Version must be 12. If no value passed, the current ICD preferred version is used."
   }
 }
 
