@@ -50,7 +50,7 @@ resource "time_sleep" "wait_for_authorization_policy" {
 
 # Create edb database
 resource "ibm_database" "enterprise_db" {
-  depends_on        = [ibm_iam_authorization_policy.kms_policy]
+  depends_on        = [time_sleep.wait_for_authorization_policy]
   resource_group_id = var.resource_group_id
   name              = var.name
   service           = "databases-for-enterprisedb"
@@ -152,7 +152,7 @@ resource "ibm_resource_tag" "enterprisedb_tag" {
 module "cbr_rule" {
   count            = length(var.cbr_rules) > 0 ? length(var.cbr_rules) : 0
   source           = "terraform-ibm-modules/cbr/ibm//modules/cbr-rule-module"
-  version          = "1.19.0"
+  version          = "1.19.1"
   rule_description = var.cbr_rules[count.index].description
   enforcement_mode = var.cbr_rules[count.index].enforcement_mode
   rule_contexts    = var.cbr_rules[count.index].rule_contexts
