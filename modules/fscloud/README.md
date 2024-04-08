@@ -55,10 +55,12 @@ No resources.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_adminuser"></a> [adminuser](#output\_adminuser) | Database admin user name |
+| <a name="output_certificate_base64"></a> [certificate\_base64](#output\_certificate\_base64) | Database connection certificate |
 | <a name="output_crn"></a> [crn](#output\_crn) | Enterprise DB instance crn |
 | <a name="output_guid"></a> [guid](#output\_guid) | Enterprise DB instance guid |
-| <a name="output_hostname"></a> [hostname](#output\_hostname) | Enterprise DB instance hostname |
+| <a name="output_hostname"></a> [hostname](#output\_hostname) | Database connection hostname |
 | <a name="output_id"></a> [id](#output\_id) | Enterprise DB instance id |
-| <a name="output_port"></a> [port](#output\_port) | Enterprise DB instance port |
+| <a name="output_port"></a> [port](#output\_port) | Database connection port |
 | <a name="output_version"></a> [version](#output\_version) | Enterprise DB instance version |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
