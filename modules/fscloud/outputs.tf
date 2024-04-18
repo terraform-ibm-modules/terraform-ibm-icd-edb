@@ -22,12 +22,23 @@ output "crn" {
   value       = module.enterprise_db.crn
 }
 
+output "adminuser" {
+  description = "Database admin user name"
+  value       = module.enterprise_db.adminuser
+}
+
 output "hostname" {
-  description = "Enterprise DB instance hostname"
+  description = "Database connection hostname"
   value       = module.enterprise_db.hostname
 }
 
 output "port" {
-  description = "Enterprise DB instance port"
+  description = "Database connection port"
   value       = module.enterprise_db.port
+}
+
+output "certificate_base64" {
+  description = "Database connection certificate"
+  value       = module.enterprise_db.certificate_base64
+  sensitive   = true
 }
