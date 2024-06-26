@@ -40,7 +40,7 @@ variable "region" {
 variable "member_memory_mb" {
   type        = number
   description = "Allocated memory per-member. See the following doc for supported values: https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling"
-  default     = 1024
+  default     = 4096
   # Validation is done in the Terraform plan phase by the IBM provider, so no need to add extra validation here.
 }
 
@@ -55,6 +55,13 @@ variable "member_cpu_count" {
   type        = number
   description = "Allocated dedicated CPU per member. Minimum number of CPU allowed is 3. For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling"
   default     = 3
+  # Validation is done in the Terraform plan phase by the IBM provider, so no need to add extra validation here.
+}
+
+variable "member_host_flavor" {
+  type        = string
+  description = "Allocated host flavor per member. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/database#host_flavor)."
+  default     = null
   # Validation is done in the Terraform plan phase by the IBM provider, so no need to add extra validation here.
 }
 

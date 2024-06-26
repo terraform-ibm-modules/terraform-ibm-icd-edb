@@ -38,6 +38,6 @@ module "read_only_replica_enterprise_db" {
   access_tags       = var.access_tags
   edb_version       = var.edb_version
   remote_leader_crn = module.enterprise_db.crn
-  member_memory_mb  = 3072  # The minimum size of a read-only replica is 3 GB RAM
+  member_memory_mb  = 4096  # The minimum size of a read-only replica is 3 GB RAM
   member_disk_mb    = 61440 # The minimum size of a read-only replica is 60 GB of disk
 }
