@@ -22,7 +22,7 @@ module "enterprise_db_pitr" {
   region             = var.region
   resource_tags      = var.resource_tags
   access_tags        = var.access_tags
-  member_host_flavor = "multitenant"
+  member_host_flavor = "b3c.4x16.encrypted"
   member_memory_mb   = 4096  # 1*3*1024
   member_disk_mb     = 61440 # 3*20**1024
   member_cpu_count   = 9

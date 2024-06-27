@@ -94,7 +94,7 @@ module "enterprise_db" {
   resource_tags              = var.resource_tags
   service_credential_names   = var.service_credential_names
   access_tags                = var.access_tags
-  member_host_flavor         = "multitenant"
+  member_host_flavor         = "b3c.4x16.encrypted"
   configuration = {
     max_connections = 250
   }

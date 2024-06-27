@@ -19,7 +19,7 @@ module "enterprise_db" {
   region             = var.region
   resource_tags      = var.resource_tags
   access_tags        = var.access_tags
-  member_host_flavor = "multitenant"
+  member_host_flavor = "b3c.4x16.encrypted"
 }
 
 data "ibm_database_backups" "backup_database" {
@@ -36,6 +36,6 @@ module "restored_enterprise_db" {
   region             = var.region
   resource_tags      = var.resource_tags
   access_tags        = var.access_tags
-  member_host_flavor = "multitenant"
+  member_host_flavor = "b3c.4x16.encrypted"
   backup_crn         = var.enterprise_db_backup_crn == null ? data.ibm_database_backups.backup_database[0].backups[0].backup_id : var.enterprise_db_backup_crn
 }
