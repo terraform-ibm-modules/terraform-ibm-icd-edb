@@ -10,7 +10,7 @@ module "enterprise_db" {
   existing_kms_instance_guid    = var.existing_kms_instance_guid
   kms_key_crn                   = var.kms_key_crn
   backup_crn                    = var.backup_crn
-  backup_encryption_key_crn     = null # Need to use default encryption until ICD adds HPCS support for backup encryption
+  backup_encryption_key_crn     = var.backup_encryption_key_crn
   resource_tags                 = var.resource_tags
   access_tags                   = var.access_tags
   cbr_rules                     = var.cbr_rules
