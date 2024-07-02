@@ -18,6 +18,7 @@ module "enterprise_db" {
   member_memory_mb              = var.member_memory_mb
   member_disk_mb                = var.member_disk_mb
   member_cpu_count              = var.member_cpu_count
+  member_host_flavor            = var.member_host_flavor
   members                       = var.members
   service_credential_names      = var.service_credential_names
   auto_scaling                  = var.auto_scaling
