@@ -90,7 +90,7 @@ resource "ibm_database" "enterprise_db" {
   dynamic "group" {
     for_each = local.host_flavor_set ? [1] : []
     content {
-      group_id = "member" # Only member type is allowed for postgresql
+      group_id = "member" # Only member type is allowed for IBM Cloud Databases
       host_flavor {
         id = var.member_host_flavor
       }
@@ -114,7 +114,7 @@ resource "ibm_database" "enterprise_db" {
   dynamic "group" {
     for_each = local.host_flavor_set ? [] : [1]
     content {
-      group_id = "member" # Only member type is allowed for postgresql
+      group_id = "member" # Only member type is allowed for IBM Cloud Databases
       memory {
         allocation_mb = var.member_memory_mb
       }
