@@ -12,10 +12,7 @@ variable "name" {
   description = "The name given to the Enterprise DB instance."
 }
 
-variable "existing_kms_instance_guid" {
-  description = "The GUID of the Hyper Protect Crypto Services instance."
-  type        = string
-}
+
 
 variable "edb_version" {
   description = "Version of the Enterprise DB instance. If no value is passed, the current preferred version of IBM Cloud Databases is used."
@@ -29,16 +26,17 @@ variable "region" {
   default     = "us-south"
 }
 
-variable "member_memory_mb" {
+##############################################################################
+# ICD hosting model properties
+##############################################################################
+variable "members" {
   type        = number
-  description = "Allocated memory per member. For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling"
-  default     = 4096
-}
-
-variable "member_disk_mb" {
-  type        = number
-  description = "Allocated disk per member. For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling"
-  default     = 20480
+  description = "Allocated number of members. Members can be scaled up but not down."
+  default     = 3
+  validation {
+    condition     = var.members >= 3 && var.members <= 20
+    error_message = "Members count must be between 3 and 20(inclusive)"
+  }
 }
 
 variable "member_cpu_count" {
@@ -47,11 +45,41 @@ variable "member_cpu_count" {
   default     = 3
 }
 
+variable "member_disk_mb" {
+  type        = number
+  description = "Allocated disk per member. For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling"
+  default     = 20480
+}
+
 variable "member_host_flavor" {
   type        = string
   description = "Allocated host flavor per member. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/database#host_flavor)."
   default     = null
-  # Validation is done in the Terraform plan phase by the IBM provider, so no need to add extra validation here.
+}
+
+variable "member_memory_mb" {
+  type        = number
+  description = "Allocated memory per member. For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling"
+  default     = 4096
+}
+
+variable "admin_pass" {
+  type        = string
+  description = "The password for the database administrator. If the admin password is null then the admin user ID cannot be accessed. More users can be specified in a user block."
+  default     = null
+  sensitive   = true
+}
+
+variable "users" {
+  type = list(object({
+    name     = string
+    password = string # pragma: allowlist secret
+    type     = string # "type" is required to generate the connection string for the outputs.
+    role     = optional(string)
+  }))
+  default     = []
+  sensitive   = true
+  description = "A list of users that you want to create on the database. Multiple blocks are allowed. The user password must be in the range of 10-32 characters. Be warned that in most case using IAM service credentials (via the var.service_credential_names) is sufficient to control access to the Enterprise Db instance. This blocks creates native enterprise database users, more info on that can be found here https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-user-management&interface=api"
 }
 
 variable "service_credential_names" {
@@ -62,16 +90,6 @@ variable "service_credential_names" {
   validation {
     condition     = alltrue([for name, role in var.service_credential_names : contains(["Administrator", "Operator", "Viewer", "Editor"], role)])
     error_message = "Valid values for service credential roles are 'Administrator', 'Operator', 'Viewer', and `Editor`"
-  }
-}
-
-variable "members" {
-  type        = number
-  description = "Allocated number of members. Members can be scaled up but not down."
-  default     = 3
-  validation {
-    condition     = var.members >= 3 && var.members <= 20
-    error_message = "Members count must be between 3 and 20(inclusive)"
   }
 }
 
@@ -105,16 +123,9 @@ variable "configuration" {
   default = null
 }
 
-variable "kms_key_crn" {
-  type        = string
-  description = "The root key CRN of the Hyper Protect Crypto Service (HPCS) to use for disk encryption."
-}
-
-variable "skip_iam_authorization_policy" {
-  type        = bool
-  description = "Set to true to skip the creation of an IAM authorization policy that permits all Enterprise database instances in the resource group to read the encryption key from the Hyper Protect Crypto Services instance. The HPCS instance is passed in through the var.existing_kms_instance_guid variable."
-  default     = false
-}
+##############################################################
+# Auto Scaling
+##############################################################
 
 variable "auto_scaling" {
   type = object({
@@ -143,29 +154,13 @@ variable "auto_scaling" {
   default     = null
 }
 
-variable "admin_pass" {
-  type        = string
-  description = "The password for the database administrator. If the admin password is null then the admin user ID cannot be accessed. More users can be specified in a user block."
-  sensitive   = true
-  default     = null
-}
+##############################################################
+# Encryption
+##############################################################
 
-variable "users" {
-  type = list(object({
-    name     = string
-    password = string # pragma: allowlist secret
-    type     = string # "type" is required to generate the connection string for the outputs.
-    role     = optional(string)
-  }))
-  default     = []
-  sensitive   = true
-  description = "A list of users that you want to create on the database. Multiple blocks are allowed. The user password must be in the range of 10-32 characters. Be warned that in most case using IAM service credentials (via the var.service_credential_names) is sufficient to control access to the Enterprise Db instance. This blocks creates native enterprise database users, more info on that can be found here https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-user-management&interface=api"
-}
-
-variable "backup_crn" {
+variable "kms_key_crn" {
   type        = string
-  description = "The CRN of a backup resource to restore from. The backup is created by a database deployment with the same service ID. The backup is loaded after provisioning and the new deployment starts up that uses that data. A backup CRN is in the format crn:v1:<…>:backup:. If omitted, the database is provisioned empty."
-  default     = null
+  description = "The root key CRN of the Hyper Protect Crypto Service (HPCS) to use for disk encryption."
 }
 
 variable "backup_encryption_key_crn" {
@@ -173,6 +168,17 @@ variable "backup_encryption_key_crn" {
   description = "The CRN of a Hyper Protect Crypto Service use for encrypting the disk that holds deployment backups. Only used if var.kms_encryption_enabled is set to true. There are limitation per region on the Hyper Protect Crypto Services and region for those services. See https://cloud.ibm.com/docs/cloud-databases?topic=cloud-databases-hpcs#use-hpcs-backups"
   default     = null
   # Validation happens in the root module
+}
+
+variable "skip_iam_authorization_policy" {
+  type        = bool
+  description = "Set to true to skip the creation of an IAM authorization policy that permits all Enterprise database instances in the resource group to read the encryption key from the Hyper Protect Crypto Services instance. The HPCS instance is passed in through the var.existing_kms_instance_guid variable."
+  default     = false
+}
+
+variable "existing_kms_instance_guid" {
+  description = "The GUID of the Hyper Protect Crypto Services instance."
+  type        = string
 }
 
 ##############################################################
@@ -193,4 +199,14 @@ variable "cbr_rules" {
   description = "(Optional, list) List of CBR rules to create"
   default     = []
   # Validation happens in the rule module
+}
+
+##############################################################
+# Backup
+##############################################################
+
+variable "backup_crn" {
+  type        = string
+  description = "The CRN of a backup resource to restore from. The backup is created by a database deployment with the same service ID. The backup is loaded after provisioning and the new deployment starts up that uses that data. A backup CRN is in the format crn:v1:<…>:backup:. If omitted, the database is provisioned empty."
+  default     = null
 }

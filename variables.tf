@@ -37,17 +37,13 @@ variable "region" {
   default     = "us-south"
 }
 
-variable "member_memory_mb" {
+##############################################################################
+# ICD hosting model properties
+##############################################################################
+variable "members" {
   type        = number
-  description = "Allocated memory per-member. See the following doc for supported values: https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling"
-  default     = 4096
-  # Validation is done in the Terraform plan phase by the IBM provider, so no need to add extra validation here.
-}
-
-variable "member_disk_mb" {
-  type        = number
-  description = "Allocated disk per member. For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling"
-  default     = 20480
+  description = "Allocated number of members. Members can be scaled up but not down."
+  default     = 3
   # Validation is done in the Terraform plan phase by the IBM provider, so no need to add extra validation here.
 }
 
@@ -58,11 +54,44 @@ variable "member_cpu_count" {
   # Validation is done in the Terraform plan phase by the IBM provider, so no need to add extra validation here.
 }
 
+variable "member_disk_mb" {
+  type        = number
+  description = "Allocated disk per member. For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling"
+  default     = 20480
+  # Validation is done in the Terraform plan phase by the IBM provider, so no need to add extra validation here.
+}
+
 variable "member_host_flavor" {
   type        = string
   description = "Allocated host flavor per member. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/database#host_flavor)."
   default     = null
   # Validation is done in the Terraform plan phase by the IBM provider, so no need to add extra validation here.
+}
+
+variable "member_memory_mb" {
+  type        = number
+  description = "Allocated memory per-member. See the following doc for supported values: https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling"
+  default     = 4096
+  # Validation is done in the Terraform plan phase by the IBM provider, so no need to add extra validation here.
+}
+
+variable "admin_pass" {
+  type        = string
+  description = "The password for the database administrator. If the admin password is null then the admin user ID cannot be accessed. More users can be specified in a user block."
+  default     = null
+  sensitive   = true
+}
+
+variable "users" {
+  type = list(object({
+    name     = string
+    password = string # pragma: allowlist secret
+    type     = string # "type" is required to generate the connection string for the outputs.
+    role     = optional(string)
+  }))
+  default     = []
+  sensitive   = true
+  description = "A list of users that you want to create on the database. Multiple blocks are allowed. The user password must be in the range of 10-32 characters. Be warned that in most case using IAM service credentials (via the var.service_credential_names) is sufficient to control access to the Enterprise Db instance. This blocks creates native enterprise database users, more info on that can be found here https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-user-management&interface=api"
 }
 
 variable "service_credential_names" {
@@ -73,16 +102,6 @@ variable "service_credential_names" {
   validation {
     condition     = alltrue([for name, role in var.service_credential_names : contains(["Administrator", "Operator", "Viewer", "Editor"], role)])
     error_message = "Valid values for service credential roles are 'Administrator', 'Operator', 'Viewer', and `Editor`"
-  }
-}
-
-variable "members" {
-  type        = number
-  description = "Allocated number of members. Members can be scaled up but not down."
-  default     = 3
-  validation {
-    condition     = var.members >= 3 && var.members <= 20
-    error_message = "Members count must be between 3 and 20(inclusive)"
   }
 }
 
@@ -131,25 +150,6 @@ variable "configuration" {
     log_min_duration_statement = optional(number)
   })
   default = null
-}
-
-variable "admin_pass" {
-  type        = string
-  description = "The password for the database administrator. If the admin password is null then the admin user ID cannot be accessed. More users can be specified in a user block."
-  sensitive   = true
-  default     = null
-}
-
-variable "users" {
-  type = list(object({
-    name     = string
-    password = string # pragma: allowlist secret
-    type     = string # "type" is required to generate the connection string for the outputs.
-    role     = optional(string)
-  }))
-  default     = []
-  sensitive   = true
-  description = "A list of users that you want to create on the database. Multiple blocks are allowed. The user password must be in the range of 10-32 characters. Be warned that in most case using IAM service credentials (via the var.service_credential_names) is sufficient to control access to the Enterprise Db instance. This blocks creates native enterprise database users, more info on that can be found here https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-user-management&interface=api"
 }
 
 ##############################################################
