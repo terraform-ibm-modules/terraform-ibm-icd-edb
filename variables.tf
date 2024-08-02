@@ -12,16 +12,11 @@ variable "name" {
   description = "The name given to the Enterprise DB instance."
 }
 
-variable "remote_leader_crn" {
-  type        = string
-  description = "A CRN of the leader database to make the replica(read-only) deployment. The leader database is created by a database deployment with the same service ID. A read-only replica is set up to replicate all of your data from the leader deployment to the replica deployment by using asynchronous replication. For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-read-only-replicas"
-  default     = null
-}
-
 variable "edb_version" {
-  description = "Version of the Enterprise DB instance to provision. If no value is passed, the current preferred version of IBM Cloud Databases is used. For our version policy, see https://cloud.ibm.com/docs/cloud-databases?topic=cloud-databases-versioning-policy for more details"
   type        = string
+  description = "Version of the Enterprise DB instance to provision. If no value is passed, the current preferred version of IBM Cloud Databases is used. For our version policy, see https://cloud.ibm.com/docs/cloud-databases?topic=cloud-databases-versioning-policy for more details"
   default     = null
+
   validation {
     condition = anytrue([
       var.edb_version == null,
@@ -32,14 +27,21 @@ variable "edb_version" {
 }
 
 variable "region" {
-  description = "The region where you want to deploy your instance."
   type        = string
+  description = "The region where you want to deploy your instance."
   default     = "us-south"
+}
+
+variable "remote_leader_crn" {
+  type        = string
+  description = "A CRN of the leader database to make the replica(read-only) deployment. The leader database is created by a database deployment with the same service ID. A read-only replica is set up to replicate all of your data from the leader deployment to the replica deployment by using asynchronous replication. For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-read-only-replicas"
+  default     = null
 }
 
 ##############################################################################
 # ICD hosting model properties
 ##############################################################################
+
 variable "members" {
   type        = number
   description = "Allocated number of members. Members can be scaled up but not down."
@@ -49,14 +51,14 @@ variable "members" {
 
 variable "member_cpu_count" {
   type        = number
-  description = "Allocated dedicated CPU per member. Minimum number of CPU allowed is 3. For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling"
+  description = "Allocated dedicated CPU per member. Minimum number of CPU allowed is 3. [Learn more](https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling)"
   default     = 3
   # Validation is done in the Terraform plan phase by the IBM provider, so no need to add extra validation here.
 }
 
 variable "member_disk_mb" {
   type        = number
-  description = "Allocated disk per member. For more information, see https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling"
+  description = "Allocated disk per member. [Learn more](https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling)"
   default     = 20480
   # Validation is done in the Terraform plan phase by the IBM provider, so no need to add extra validation here.
 }
@@ -70,7 +72,7 @@ variable "member_host_flavor" {
 
 variable "member_memory_mb" {
   type        = number
-  description = "Allocated memory per-member. See the following doc for supported values: https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling"
+  description = "Allocated memory per member. [Learn more](https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling)"
   default     = 4096
   # Validation is done in the Terraform plan phase by the IBM provider, so no need to add extra validation here.
 }
@@ -89,14 +91,14 @@ variable "users" {
     type     = string # "type" is required to generate the connection string for the outputs.
     role     = optional(string)
   }))
+  description = "A list of users that you want to create on the database. Multiple blocks are allowed. The user password must be in the range of 10-32 characters. Be warned that in most case using IAM service credentials (via the var.service_credential_names) is sufficient to control access to the Enterprise Db instance. This blocks creates native enterprise database users, more info on that can be found here https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-user-management&interface=api"
   default     = []
   sensitive   = true
-  description = "A list of users that you want to create on the database. Multiple blocks are allowed. The user password must be in the range of 10-32 characters. Be warned that in most case using IAM service credentials (via the var.service_credential_names) is sufficient to control access to the Enterprise Db instance. This blocks creates native enterprise database users, more info on that can be found here https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-user-management&interface=api"
 }
 
 variable "service_credential_names" {
-  description = "Map of name, role for service credentials that you want to create for the database"
   type        = map(string)
+  description = "Map of name, role for service credentials that you want to create for the database"
   default     = {}
 
   validation {
@@ -109,6 +111,7 @@ variable "service_endpoints" {
   type        = string
   description = "Specify whether you want to enable the public, private, or both service endpoints. Supported values are 'public', 'private', or 'public-and-private'."
   default     = "private"
+
   validation {
     condition     = contains(["public", "private", "public-and-private"], var.service_endpoints)
     error_message = "Valid values for service_endpoints are 'public', 'public-and-private', and 'private'"
@@ -134,8 +137,8 @@ variable "access_tags" {
   }
 }
 
+# Learn more: https://cloud.ibm.com/apidocs/cloud-databases-api/cloud-databases-api-v4#setdatabaseconfiguration-request
 variable "configuration" {
-  description = "Database configuration"
   type = object({
     max_connections            = optional(number)
     max_prepared_transactions  = optional(number)
@@ -149,7 +152,8 @@ variable "configuration" {
     archive_timeout            = optional(number)
     log_min_duration_statement = optional(number)
   })
-  default = null
+  description = "Database configuration. [Learn more](https://cloud.ibm.com/apidocs/cloud-databases-api/cloud-databases-api-v4#setdatabaseconfiguration-request)"
+  default     = null
 }
 
 ##############################################################
@@ -193,34 +197,36 @@ variable "kms_encryption_enabled" {
   default     = false
 }
 
+variable "use_default_backup_encryption_key" {
+  type        = bool
+  description = "Set to true to use default ICD randomly generated keys."
+  default     = false
+}
+
 variable "kms_key_crn" {
   type        = string
-  description = "The root key CRN of a Key Management Services like Key Protect or Hyper Protect Crypto Services (HPCS) that you want to use for disk encryption. Only used if var.kms_encryption_enabled is set to true."
+  description = "The root key CRN of a Key Management Services like Key Protect or Hyper Protect Crypto Services (HPCS) to use for disk encryption. Only used if var.kms_encryption_enabled is set to true."
   default     = null
+
   validation {
     condition = anytrue([
       var.kms_key_crn == null,
       can(regex(".*kms.*", var.kms_key_crn)),
       can(regex(".*hs-crypto.*", var.kms_key_crn)),
     ])
-    error_message = "Value must be the root key CRN from either the Key Protect or Hyper Protect Crypto Service (HPCS)"
+    error_message = "Value must be the root key CRN from either the Key Protect or Hyper Protect Crypto Services (HPCS)"
   }
 }
 
 variable "backup_encryption_key_crn" {
   type        = string
-  description = "The CRN of a KMS (Key Protect or Hyper Protect Crypto Service) key to use for encrypting the disk that holds deployment backups. Only used if var.kms_encryption_enabled is set to true. There are limitation per region on the type of KMS service (Key Protect or Hyper Protect Crypto Services) and region for those services. See https://cloud.ibm.com/docs/cloud-databases?topic=cloud-databases-key-protect&interface=ui#key-byok and https://cloud.ibm.com/docs/cloud-databases?topic=cloud-databases-hpcs#use-hpcs-backups"
+  description = "The CRN of a KMS (Key Protect or Hyper Protect Crypto Services) key to use for encrypting the disk that holds deployment backups. Only used if var.kms_encryption_enabled is set to true. There are limitation per region on the type of KMS service (Key Protect or Hyper Protect Crypto Services) and region for those services. See https://cloud.ibm.com/docs/cloud-databases?topic=cloud-databases-key-protect&interface=ui#key-byok and https://cloud.ibm.com/docs/cloud-databases?topic=cloud-databases-hpcs#use-hpcs-backups"
   default     = null
+
   validation {
     condition     = var.backup_encryption_key_crn == null ? true : length(regexall("^crn:v1:bluemix:public:kms:(us-south|us-east|eu-de):a/[[:xdigit:]]{32}:[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}:key:[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}$|^crn:v1:bluemix:public:hs-crypto:[a-z-]+:a/[[:xdigit:]]{32}:[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}:key:[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}$", var.backup_encryption_key_crn)) > 0
-    error_message = "Valid values for backup_encryption_key_crn is null, a Hyper Protect Crypto Service key CRN or a Key Protect key CRN from us-south, us-east or eu-de"
+    error_message = "Valid values for backup_encryption_key_crn is null, a Hyper Protect Crypto Services key CRN or a Key Protect key CRN from us-south, us-east or eu-de"
   }
-}
-
-variable "use_default_backup_encryption_key" {
-  type        = bool
-  description = "Set to true to use default ICD randomly generated keys."
-  default     = false
 }
 
 variable "skip_iam_authorization_policy" {
@@ -230,8 +236,8 @@ variable "skip_iam_authorization_policy" {
 }
 
 variable "existing_kms_instance_guid" {
-  description = "The GUID of the Hyper Protect Crypto Services or Key Protect instance in which the key specified in var.kms_key_crn and var.backup_encryption_key_crn is coming from. Required only if var.kms_encryption_enabled is set to true, var.skip_iam_authorization_policy is set to false, and you pass a value for var.kms_key_crn, var.backup_encryption_key_crn, or both."
   type        = string
+  description = "The GUID of the Hyper Protect Crypto Services or Key Protect instance in which the key specified in var.kms_key_crn and var.backup_encryption_key_crn is coming from. Only required if var.kms_encryption_enabled is true, var.skip_iam_authorization_policy is false, and passing a value for var.kms_key_crn, var.backup_encryption_key_crn, or both."
   default     = null
 }
 
@@ -263,6 +269,7 @@ variable "backup_crn" {
   type        = string
   description = "The CRN of a backup resource to restore from. The backup is created by a database deployment with the same service ID. The backup is loaded after provisioning and the new deployment starts up that uses that data. A backup CRN is in the format crn:v1:<…>:backup:. If omitted, the database is provisioned empty."
   default     = null
+
   validation {
     condition = anytrue([
       var.backup_crn == null,
