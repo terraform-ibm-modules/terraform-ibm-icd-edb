@@ -27,7 +27,6 @@ locals {
   # Determine if host_flavor is used
   host_flavor_set = var.member_host_flavor != null ? true : false
 
-  
   parsed_kms_key_crn = var.kms_key_crn != null ? split(":", var.kms_key_crn) : []
   kms_service        = length(local.parsed_kms_key_crn) > 0 ? local.parsed_kms_key_crn[4] : null
   kms_scope          = length(local.parsed_kms_key_crn) > 0 ? local.parsed_kms_key_crn[6] : null
@@ -37,13 +36,12 @@ locals {
 
 # Create IAM Authorization Policies to allow EDB to access KMS for the encryption key
 resource "ibm_iam_authorization_policy" "kms_policy" {
-  count                       = var.kms_encryption_enabled == false || var.skip_iam_authorization_policy ? 0 : 1
-  source_service_name         = "databases-for-enterprisedb"
-  source_resource_group_id    = var.resource_group_id
-  roles                       = ["Reader"]
-  description                 = "Allow all Enterprise db instances in the resource group ${var.resource_group_id} to read from the ${local.kms_service} instance GUID ${var.existing_kms_instance_guid}"
-  
-  
+  count                    = var.kms_encryption_enabled == false || var.skip_iam_authorization_policy ? 0 : 1
+  source_service_name      = "databases-for-enterprisedb"
+  source_resource_group_id = var.resource_group_id
+  roles                    = ["Reader"]
+  description              = "Allow all Enterprise db instances in the resource group ${var.resource_group_id} to read from the ${local.kms_service} instance GUID ${var.existing_kms_instance_guid}"
+
   resource_attributes {
     name     = "serviceName"
     operator = "stringEquals"
