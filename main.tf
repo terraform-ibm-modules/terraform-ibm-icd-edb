@@ -93,9 +93,9 @@ resource "ibm_database" "enterprise_db" {
 
   ## This for_each block is NOT a loop to attach to multiple group blocks.
   ## This is used to conditionally add one, OR, the other group block depending on var.local.host_flavor_set
-  ## This block is for if host_flavor IS set to specific pre-defined host sizes and not set to "multitenant"
+  ## This block is for if host_flavor IS set to specific pre-defined host sizes
   dynamic "group" {
-    for_each = local.host_flavor_set && var.member_host_flavor != "multitenant" && !local.recovery_mode ? [1] : []
+    for_each = local.host_flavor_set && !local.recovery_mode ? [1] : []
     content {
       group_id = "member" # Only member type is allowed for IBM Cloud Databases
       host_flavor {
@@ -119,17 +119,14 @@ resource "ibm_database" "enterprise_db" {
 
   ## This block is for if host_flavor IS NOT set
   dynamic "group" {
-    for_each = local.host_flavor_set && var.member_host_flavor == "multitenant" && !local.recovery_mode ? [1] : []
+    for_each = local.host_flavor_set && !local.recovery_mode ? [1] : []
     content {
       group_id = "member" # Only member type is allowed for IBM Cloud Databases
-      host_flavor {
-        id = var.member_host_flavor
+      memory {
+        allocation_mb = var.member_memory_mb
       }
       disk {
         allocation_mb = var.member_disk_mb
-      }
-      memory {
-        allocation_mb = var.member_memory_mb
       }
       cpu {
         allocation_count = var.member_cpu_count
