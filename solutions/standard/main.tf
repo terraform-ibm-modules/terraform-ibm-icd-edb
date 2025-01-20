@@ -28,7 +28,7 @@ locals {
 #######################################################################################################################
 
 locals {
-  create_new_kms_key  = !var.use_ibm_owned_encryption_key && var.existing_kms_key_crn == null ? true : false # no need to create any KMS resources if passing an existing key, or using IBM owned keys
+  create_new_kms_key         = !var.use_ibm_owned_encryption_key && var.existing_kms_key_crn == null ? true : false # no need to create any KMS resources if passing an existing key, or using IBM owned keys
   enterprisedb_key_name      = var.prefix != null ? "${var.prefix}-${var.key_name}" : var.key_name
   enterprisedb_key_ring_name = var.prefix != null ? "${var.prefix}-${var.key_ring_name}" : var.key_ring_name
 }
@@ -245,9 +245,9 @@ module "enterprisedb" {
   source                            = "../../modules/fscloud"
   depends_on                        = [time_sleep.wait_for_authorization_policy, time_sleep.wait_for_backup_kms_authorization_policy]
   resource_group_id                 = module.resource_group.resource_group_id
-  name                     = var.prefix != null ? "${var.prefix}-${var.name}" : var.name
+  name                              = var.prefix != null ? "${var.prefix}-${var.name}" : var.name
   region                            = var.region
-  edb_version                     = var.edb_version
+  edb_version                       = var.edb_version
   skip_iam_authorization_policy     = var.skip_enterprisedb_kms_auth_policy
   use_ibm_owned_encryption_key      = var.use_ibm_owned_encryption_key
   kms_key_crn                       = local.kms_key_crn
@@ -255,14 +255,14 @@ module "enterprisedb" {
   use_same_kms_key_for_backups      = local.use_same_kms_key_for_backups
   use_default_backup_encryption_key = var.use_default_backup_encryption_key
   access_tags                       = var.access_tags
-  resource_tags                              = var.tags
+  resource_tags                     = var.tags
   admin_pass                        = local.admin_pass
   users                             = var.users
   members                           = var.members
   member_host_flavor                = var.member_host_flavor
-  member_memory_mb                         = var.member_memory_mb
-  member_disk_mb                           = var.member_disk_mb
-  member_cpu_count                         = var.member_cpu_count
+  member_memory_mb                  = var.member_memory_mb
+  member_disk_mb                    = var.member_disk_mb
+  member_cpu_count                  = var.member_cpu_count
   auto_scaling                      = var.auto_scaling
   configuration                     = var.configuration
   service_credential_names          = var.service_credential_names
