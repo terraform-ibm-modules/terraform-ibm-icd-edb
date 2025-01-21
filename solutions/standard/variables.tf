@@ -49,7 +49,7 @@ variable "edb_version" {
 variable "members" {
   type        = number
   description = "The number of members that are allocated. [Learn more](https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling)."
-  default     = 2
+  default     = 3
 }
 
 variable "member_memory_mb" {
@@ -61,19 +61,19 @@ variable "member_memory_mb" {
 variable "member_cpu_count" {
   type        = number
   description = "The dedicated CPU per member that is allocated. For shared CPU, set to 0. [Learn more](https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling)."
-  default     = 0
+  default     = 3
 }
 
 variable "member_disk_mb" {
   type        = number
   description = "The disk that is allocated per member. [Learn more](https://cloud.ibm.com/docs/databases-for-enterprisedb?topic=databases-for-enterprisedb-resources-scaling)."
-  default     = 5120
+  default     = 20480
 }
 
 variable "member_host_flavor" {
   type        = string
   description = "The host flavor per member. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/database#host_flavor)."
-  default     = "multitenant"
+  default     = "b3c.4x16.encrypted"
 }
 
 variable "configuration" {
