@@ -160,7 +160,7 @@ func TestRunStandardSolutionSchematics(t *testing.T) {
 		{Name: "access_tags", Value: permanentResources["accessTags"], DataType: "list(string)"},
 		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
 		{Name: "kms_endpoint_type", Value: "private", DataType: "string"},
-		{Name: "edb_version", Value: "7.2", DataType: "string"}, // Always lock this test into the latest supported EnterpriseDB version
+		{Name: "edb_version", Value: "12", DataType: "string"}, // Always lock this test into the latest supported EnterpriseDB version
 		{Name: "resource_group_name", Value: options.Prefix, DataType: "string"},
 		{Name: "existing_secrets_manager_instance_crn", Value: permanentResources["secretsManagerCRN"], DataType: "string"},
 		{Name: "service_credential_secrets", Value: serviceCredentialSecrets, DataType: "list(object)"},
