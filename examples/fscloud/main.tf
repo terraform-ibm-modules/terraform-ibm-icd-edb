@@ -54,20 +54,32 @@ module "cbr_zone" {
 ##############################################################################
 
 module "enterprise_db" {
-  source                     = "../../modules/fscloud"
-  resource_group_id          = module.resource_group.resource_group_id
-  name                       = "${var.prefix}-edb"
-  region                     = var.region
-  edb_version                = var.edb_version
-  kms_key_crn                = var.kms_key_crn
-  existing_kms_instance_guid = var.existing_kms_instance_guid
-  resource_tags              = var.resource_tags
-  service_credential_names   = var.service_credential_names
-  access_tags                = var.access_tags
-  auto_scaling               = var.auto_scaling
-  member_host_flavor         = "b3c.4x16.encrypted"
-  backup_encryption_key_crn  = var.backup_encryption_key_crn
-  backup_crn                 = var.backup_crn
+  source                    = "../../modules/fscloud"
+  resource_group_id         = module.resource_group.resource_group_id
+  name                      = "${var.prefix}-edb"
+  region                    = var.region
+  edb_version               = var.edb_version
+  resource_tags             = var.resource_tags
+  kms_key_crn               = var.kms_key_crn
+  backup_encryption_key_crn = var.backup_encryption_key_crn
+  backup_crn                = var.backup_crn
+  service_credential_names = {
+    "enterprisedb_admin" : "Administrator",
+    "enterprisedb_operator" : "Operator",
+    "enterprisedb_viewer" : "Viewer",
+    "enterprisedb_editor" : "Editor",
+  }
+  auto_scaling = {
+    disk = {
+      capacity_enabled : true,
+      io_enabled : true
+    }
+    memory = {
+      io_enabled : true,
+    }
+  }
+  member_host_flavor = "b3c.4x16.encrypted"
+  access_tags        = var.access_tags
   cbr_rules = [
     {
       description      = "${var.prefix}-edb access only from vpc"

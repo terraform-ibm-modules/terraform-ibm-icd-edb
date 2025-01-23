@@ -14,6 +14,11 @@ module "resource_group" {
 # Key Protect All Inclusive
 ##############################################################################
 
+locals {
+  data_key_name    = "${var.prefix}-enterprisedb"
+  backups_key_name = "${var.prefix}-enterprisedb-backups"
+}
+
 module "key_protect_all_inclusive" {
   source            = "terraform-ibm-modules/kms-all-inclusive/ibm"
   version           = "4.19.2"
@@ -28,7 +33,11 @@ module "key_protect_all_inclusive" {
       key_ring_name = "icd-edb"
       keys = [
         {
-          key_name     = "${var.prefix}-edb"
+          key_name     = local.data_key_name
+          force_delete = true
+        },
+        {
+          key_name     = local.backups_key_name
           force_delete = true
         }
       ]
@@ -80,20 +89,27 @@ module "cbr_zone" {
 ##############################################################################
 
 module "enterprise_db" {
-  source                     = "../../"
-  resource_group_id          = module.resource_group.resource_group_id
-  name                       = "${var.prefix}-edb"
-  region                     = var.region
-  edb_version                = var.edb_version
-  admin_pass                 = var.admin_pass
-  users                      = var.users
-  kms_encryption_enabled     = true
-  kms_key_crn                = module.key_protect_all_inclusive.keys["icd-edb.${var.prefix}-edb"].crn
-  existing_kms_instance_guid = module.key_protect_all_inclusive.kms_guid
-  resource_tags              = var.resource_tags
-  service_credential_names   = var.service_credential_names
-  access_tags                = var.access_tags
-  member_host_flavor         = "b3c.4x16.encrypted"
+  source            = "../../"
+  resource_group_id = module.resource_group.resource_group_id
+  name              = "${var.prefix}-edb"
+  region            = var.region
+  edb_version       = var.edb_version
+  admin_pass        = var.admin_pass
+  users             = var.users
+  resource_tags     = var.resource_tags
+  # Example of how to use different KMS keys for data and backups
+  use_ibm_owned_encryption_key = false
+  use_same_kms_key_for_backups = false
+  kms_key_crn                  = module.key_protect_all_inclusive.keys["icd-edb.${var.prefix}-edb"].crn
+  backup_encryption_key_crn    = module.key_protect_all_inclusive.keys["icd.${local.data_key_name}"].crn
+  service_credential_names = {
+    "enterprisedb_admin" : "Administrator",
+    "enterprisedb_operator" : "Operator",
+    "enterprisedb_viewer" : "Viewer",
+    "enterprisedb_editor" : "Editor",
+  }
+  access_tags        = var.access_tags
+  member_host_flavor = "b3c.4x16.encrypted"
   configuration = {
     max_connections = 250
   }
