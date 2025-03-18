@@ -88,7 +88,7 @@ module "cbr_zone" {
 # EDB Instance
 ##############################################################################
 
-module "icd_enterprise_db" {
+module "enterprise_db" {
   source            = "../../"
   resource_group_id = module.resource_group.resource_group_id
   name              = "${var.prefix}-edb"
@@ -135,7 +135,7 @@ module "icd_enterprise_db" {
 
 # VPE provisioning should wait for the database provisioning
 resource "time_sleep" "wait_120_seconds" {
-  depends_on      = [module.icd_enterprise_db]
+  depends_on      = [module.enterprise_db]
   create_duration = "120s"
 }
 
@@ -151,7 +151,7 @@ resource "ibm_is_security_group" "sg1" {
 resource "ibm_is_virtual_endpoint_gateway" "edbvpe" {
   name = "${var.prefix}-vpe-to-edb"
   target {
-    crn           = module.icd_enterprise_db.crn
+    crn           = module.enterprise_db.crn
     resource_type = "provider_cloud_service"
   }
   vpc = ibm_is_vpc.example_vpc.id
