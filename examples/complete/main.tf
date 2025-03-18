@@ -88,7 +88,7 @@ module "cbr_zone" {
 # EDB Instance
 ##############################################################################
 
-module "enterprise_db" {
+module "icd_enterprise_db" {
   source            = "../../"
   resource_group_id = module.resource_group.resource_group_id
   name              = "${var.prefix}-edb"
@@ -96,7 +96,7 @@ module "enterprise_db" {
   edb_version       = var.edb_version
   admin_pass        = var.admin_pass
   users             = var.users
-  resource_tags     = var.resource_tags
+  tags              = var.resource_tags
   # Example of how to use different KMS keys for data and backups
   use_ibm_owned_encryption_key = false
   use_same_kms_key_for_backups = false
@@ -135,7 +135,7 @@ module "enterprise_db" {
 
 # VPE provisioning should wait for the database provisioning
 resource "time_sleep" "wait_120_seconds" {
-  depends_on      = [module.enterprise_db]
+  depends_on      = [module.icd_enterprise_db]
   create_duration = "120s"
 }
 
@@ -151,7 +151,7 @@ resource "ibm_is_security_group" "sg1" {
 resource "ibm_is_virtual_endpoint_gateway" "edbvpe" {
   name = "${var.prefix}-vpe-to-edb"
   target {
-    crn           = module.enterprise_db.crn
+    crn           = module.icd_enterprise_db.crn
     resource_type = "provider_cloud_service"
   }
   vpc = ibm_is_vpc.example_vpc.id
