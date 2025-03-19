@@ -35,7 +35,7 @@ module "database" {
 # ICD enterprise db read-only-replica
 ##############################################################################
 
-module "read_only_replica_database" {
+module "read_only_replica_enterprise_db" {
   count             = var.read_only_replicas_count
   source            = "../.."
   resource_group_id = module.resource_group.resource_group_id
