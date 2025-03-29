@@ -10,32 +10,18 @@ module "resource_group" {
   existing_resource_group_name = var.resource_group
 }
 
-module "enterprise_db" {
-  count              = var.enterprise_db_backup_crn != null ? 0 : 1
-  source             = "../.."
-  resource_group_id  = module.resource_group.resource_group_id
-  name               = "${var.prefix}-edb"
-  edb_version        = var.edb_version
-  region             = var.region
-  resource_tags      = var.resource_tags
-  access_tags        = var.access_tags
-  member_host_flavor = "b3c.4x16.encrypted"
-}
-
 data "ibm_database_backups" "backup_database" {
-  count         = var.enterprise_db_backup_crn != null ? 0 : 1
-  deployment_id = module.enterprise_db[0].id
+  deployment_id = var.existing_database_crn
 }
-
 # New enterprise db instance pointing to the backup instance
-module "restored_enterprise_db" {
+module "restored_icd_enterprise_db" {
   source             = "../.."
   resource_group_id  = module.resource_group.resource_group_id
   name               = "${var.prefix}-edb-restored"
   edb_version        = var.edb_version
   region             = var.region
-  resource_tags      = var.resource_tags
+  tags               = var.resource_tags
   access_tags        = var.access_tags
   member_host_flavor = "b3c.4x16.encrypted"
-  backup_crn         = var.enterprise_db_backup_crn == null ? data.ibm_database_backups.backup_database[0].backups[0].backup_id : var.enterprise_db_backup_crn
+  backup_crn         = data.ibm_database_backups.backup_database.backups[0].backup_id
 }

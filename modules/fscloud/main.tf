@@ -8,9 +8,9 @@ module "enterprise_db" {
   service_endpoints                 = "private"
   cbr_rules                         = var.cbr_rules
   configuration                     = var.configuration
-  member_cpu_count                  = var.member_cpu_count
-  member_memory_mb                  = var.member_memory_mb
-  member_disk_mb                    = var.member_disk_mb
+  cpu_count                         = var.cpu_count
+  memory_mb                         = var.memory_mb
+  disk_mb                           = var.disk_mb
   member_host_flavor                = var.member_host_flavor
   members                           = var.members
   admin_pass                        = var.admin_pass
@@ -23,6 +23,6 @@ module "enterprise_db" {
   backup_encryption_key_crn         = var.backup_encryption_key_crn
   auto_scaling                      = var.auto_scaling
   access_tags                       = var.access_tags
-  resource_tags                     = var.resource_tags
+  tags                              = var.tags
   service_credential_names          = var.service_credential_names
 }

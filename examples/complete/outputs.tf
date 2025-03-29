@@ -28,11 +28,6 @@ output "service_credentials_object" {
   sensitive   = true
 }
 
-output "cbr_rule_ids" {
-  description = "CBR rule ids created to restrict Enterprise DB"
-  value       = module.enterprise_db.cbr_rule_ids
-}
-
 output "hostname" {
   description = "EnterpriseDB instance hostname"
   value       = module.enterprise_db.hostname

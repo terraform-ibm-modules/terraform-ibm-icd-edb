@@ -14,14 +14,21 @@ module "resource_group" {
 # ICD Enterprise database
 ##############################################################################
 
-module "enterprise_db" {
+module "database" {
   source            = "../.."
   resource_group_id = module.resource_group.resource_group_id
   name              = "${var.prefix}-edb"
   edb_version       = var.edb_version
   region            = var.region
-  resource_tags     = var.resource_tags
+  tags              = var.resource_tags
   access_tags       = var.access_tags
+  service_endpoints = var.service_endpoints
+  service_credential_names = {
+    "enterprisedb_admin" : "Administrator",
+    "enterprisedb_operator" : "Operator",
+    "enterprisedb_viewer" : "Viewer",
+    "enterprisedb_editor" : "Editor",
+  }
 }
 
 ##############################################################################
@@ -34,10 +41,10 @@ module "read_only_replica_enterprise_db" {
   resource_group_id = module.resource_group.resource_group_id
   name              = "${var.prefix}-read-only-replica-${count.index}"
   region            = var.region
-  resource_tags     = var.resource_tags
+  tags              = var.resource_tags
   access_tags       = var.access_tags
   edb_version       = var.edb_version
-  remote_leader_crn = module.enterprise_db.crn
-  member_memory_mb  = 4096  # The minimum size of a read-only replica is 3 GB RAM
-  member_disk_mb    = 61440 # The minimum size of a read-only replica is 60 GB of disk
+  remote_leader_crn = module.database.crn
+  memory_mb         = 4096  # The minimum size of a read-only replica is 3 GB RAM
+  disk_mb           = 61440 # The minimum size of a read-only replica is 60 GB of disk
 }

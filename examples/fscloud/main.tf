@@ -59,7 +59,7 @@ module "enterprise_db" {
   name                      = "${var.prefix}-edb"
   region                    = var.region
   edb_version               = var.edb_version
-  resource_tags             = var.resource_tags
+  tags                      = var.resource_tags
   kms_key_crn               = var.kms_key_crn
   backup_encryption_key_crn = var.backup_encryption_key_crn
   backup_crn                = var.backup_crn
