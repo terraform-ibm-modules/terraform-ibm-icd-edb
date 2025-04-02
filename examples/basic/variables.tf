@@ -40,6 +40,17 @@ variable "access_tags" {
   default     = []
 }
 
+variable "service_endpoints" {
+  type        = string
+  description = "The type of endpoint of the database instance. Possible values: `public`, `private`, `public-and-private`."
+  default     = "public"
+
+  validation {
+    condition     = can(regex("public|public-and-private|private", var.service_endpoints))
+    error_message = "Valid values for service_endpoints are 'public', 'public-and-private', and 'private'"
+  }
+}
+
 variable "read_only_replicas_count" {
   type        = number
   description = "Number of read-only replicas per leader"

@@ -96,7 +96,7 @@ module "enterprise_db" {
   edb_version       = var.edb_version
   admin_pass        = var.admin_pass
   users             = var.users
-  resource_tags     = var.resource_tags
+  tags              = var.resource_tags
   # Example of how to use different KMS keys for data and backups
   use_ibm_owned_encryption_key = false
   use_same_kms_key_for_backups = false

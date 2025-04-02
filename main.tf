@@ -180,7 +180,7 @@ resource "ibm_database" "enterprise_db" {
   backup_id                            = var.backup_crn
   remote_leader_id                     = var.remote_leader_crn
   version                              = var.edb_version
-  tags                                 = var.resource_tags
+  tags                                 = var.tags
   adminpassword                        = var.admin_pass
   service_endpoints                    = var.service_endpoints
   configuration                        = var.configuration != null ? jsonencode({ for k, v in var.configuration : k => v if v != null }) : null
@@ -214,7 +214,7 @@ resource "ibm_database" "enterprise_db" {
         id = var.member_host_flavor
       }
       disk {
-        allocation_mb = var.member_disk_mb
+        allocation_mb = var.disk_mb
       }
       dynamic "members" {
         for_each = var.remote_leader_crn == null ? [1] : []
@@ -235,13 +235,13 @@ resource "ibm_database" "enterprise_db" {
     content {
       group_id = "member" # Only member type is allowed for IBM Cloud Databases
       memory {
-        allocation_mb = var.member_memory_mb
+        allocation_mb = var.memory_mb
       }
       disk {
-        allocation_mb = var.member_disk_mb
+        allocation_mb = var.disk_mb
       }
       cpu {
-        allocation_count = var.member_cpu_count
+        allocation_count = var.cpu_count
       }
       dynamic "members" {
         for_each = var.remote_leader_crn == null ? [1] : []
